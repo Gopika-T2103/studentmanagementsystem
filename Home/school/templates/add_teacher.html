@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/add_teacher.css' %}">
+    <title>Add_Teacher</title>
+</head>
+<body>
+
+        <!-- Adding teacher form  -->
+
+        <div id="addTeacherSection">
+            <h2>Add New Teacher</h2>
+            <a href="{% url 'principal_dashboard' %}" class="back-btn">Back</a>
+            <form action="" id="addTeacherForm" method="POST">
+                {% csrf_token %}
+                <label for="teachername">Name</label>
+                <input type="text" name="tname" id="tname" placeholder="Enter Teacher Name" required>
+                <label for="tchrid">Teacher ID</label>
+                <input type="text" id="teacher_id" name="teacher_id" placeholder="Enter Teacher ID" required>
+                <label for="email">Email</label>
+                <input type="email" id="temail" name="temail" placeholder="Enter Email ID" required>
+                <label for="dept">Department</label>
+                <input type="text" id="tdept" name="tdept" placeholder="Enter Department name">
+                <label for="clss">Assigned classes</label>
+                <input type="text" id="tassign" name="tassign" placeholder="Assigned classes" required>
+                <button type="submit" class="save-btn">Save</button>
+            </form>
+        </div>
+    </div>
+<script src="{% static 'js/princi.js' %}"></script>
+</body>
+</html>

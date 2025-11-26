@@ -1,0 +1,127 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/login.css' %}?v=2">
+    <title>Login/Signup page</title>
+</head>
+<body>
+<div class="login-container" id="loginForm">
+
+        <div class="login-box">
+                    <div class="img">
+                        <img src="{% static 'img/student.jpg'%}" alt="not found">
+                    </div>
+                         <!-- <h2 class="login-title">Student Management System</h2> -->
+                    <h2 style="text-align: center;" id="h2">Login</h2>
+            
+                    <form method="POST" class="login-form" action="/login/">
+
+                        {% csrf_token %}
+                        {% if error %}
+                        <p class="error-msg" style="color: red;">{{ error }}</p>
+                        {% endif %}
+
+                    <!-- <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" name="username" placeholder="Enter username" id="username" required>
+                    </div> -->
+                
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" name="email" placeholder="Enter email" id="email" required>
+                    </div>
+                
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" name="password" placeholder="Enter password" id="password" required>
+                    </div>
+                
+                    <div class="form-group">
+                        <label for="role">Role</label>
+                        <select name="role" id="role" required>
+                            <option value="">Select Role</option>
+                            <option value="principal">Principal</option>
+                            <option value="teacher">Teacher</option>
+                            <option value="student">Student</option>
+                        </select>
+                    </div>
+                        <div class="forgot">
+                            <a href="#" style="text-align: center;">Forgot Password?</a>
+                        </div>
+                         <button type="submit" class="login-btn" disabled id="loginBtn">Login</button>
+                        <p>Don't have an acoount? <a href=# id="showSignup">Signup</a></p>
+                     </form>
+        </div>
+</div>
+    
+
+<!-- ----------------------------------------Login section ends------------------------------- -->
+
+<!-- ----------------------------------------Signup section starts here-------------------------- -->
+<div class="bg-container">
+   
+        <div class="img">
+            <img src="{% static 'img/student.jpg'%}" alt="not found">
+        </div>
+    <div class="sign-container" id="signupForm">
+        <div class="sign-box">
+            <h2 style="text-align: center; color: aliceblue;" id="h2">Signup</h2>
+
+        <form method="POST" class="sign-form" action="/signup/">
+            {% csrf_token %}
+
+            {% if error %}
+                <p class="error-msg">{{ error }}</p>
+            {% endif %}
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" name="username" placeholder="Enter username" id="signup_username" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" name="email" placeholder="Enter email" id="signup_email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" placeholder="Enter password" id="signup_password" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmpassword">Confirm Password</label>
+                    <input type="password" name="confirmpassword" placeholder="confirmpassword" id="signup_confirmpassword" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="role">Role</label>
+                    <select name="role" id="signup_role" required>
+                        <option value="">Select Role</option>
+                        <option value="principal">Principal</option>
+                        <option value="teacher">Teacher</option>
+                        <option value="student">Student</option>
+                    </select>
+                </div>
+                <div class="forgot">
+                    <a href="#">Forgot Password?</a>
+                </div>
+                <button type="submit" class="signup-btn" disabled id="signupBtn">Signup</button>
+                <p>already have an acoount... <a href="#" id="showLogin">Login</a></p>
+                <p style="text-align: center;">Back To <a href="/">Home</a></p>
+        </form>
+        </div>
+    </div>
+</div>
+    <script src="{% static 'js/script.js' %}?v=1"></script>
+    {% if alert %}
+    <script>
+        alert("{{ alert }}");
+        </script>
+{% endif %}
+
+
+</body>
+</html>

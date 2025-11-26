@@ -1,0 +1,193 @@
+/* all_Teachers List Style */
+
+
+/* MAIN RIGHT SIDE CONTAINER */
+.right-container {
+    padding: 25px 35px;
+    background: #f4f6f9;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+/* HEADER (Teacher Management + Search + Buttons) */
+.teacher-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fff;
+    padding: 18px 22px;
+    border-radius: 10px;
+    box-shadow: 0px 2px 6px rgba(0,0,0,0.08);
+    margin-bottom: 20px;
+}
+
+.teacher-header h2 {
+    font-size: 22px;
+    font-weight: 600;
+    color: #333;
+}
+
+
+
+.back-btns {
+    position: absolute;
+    top: 20px;
+    right: 10px;
+
+    display: inline-block;
+    padding: 10px 18px;
+
+    background: #051df7cc;      
+    border-radius: 8px;
+    border: 1px solid #dcdcdc;
+
+    font-size: 14px;
+    font-weight: 600;
+    color: #f0eeee;
+    text-decoration: none;
+
+    backdrop-filter: blur(6px);
+    box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+
+    transition: 0.3s ease;
+}
+
+.back-btns:hover {
+    background: #3d17fd;
+    box-shadow: 0 5px 12px rgba(0,0,0,0.25);
+    transform: translateY(-2px);
+}
+
+/* Search + Filter + Add New Teacher */
+.teacher-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.search-box {
+    padding: 9px 12px;
+    width: 200px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background: #f8f8f8;
+    margin-left: 220px;
+}
+
+.filter-btn,
+.add-btn {
+    border: none;
+    padding: 9px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+/* Filter button */
+.filter-btn {
+    background: #eef1f4;
+    color: #333;
+}
+
+/* Add New Teacher Button */
+.add-btn {
+    background: #0d6efd;
+    color: #101010;
+    font-weight: 500;
+}
+
+/* TABLE STYLING */
+.teacher-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgb(240, 240, 247);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0px 2px 6px rgba(0,0,0,0.08);
+}
+
+.teacher-table thead {
+    background: #c5dbfe;
+}
+
+.teacher-table th, .teacher-table td {
+    padding: 14px 18px;
+    text-align: left;
+    font-size: 14px;
+    border-bottom: 1px solid #eee;
+}
+
+.teacher-table tbody tr:hover {
+    background: #044d96;
+    color: white;
+    font-weight: bold;
+}
+
+/* ACTION BUTTONS */
+.action-btn {
+    padding: 7px 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-right: 6px;
+    font-size: 13px;
+}
+
+/* Edit Button */
+.edit-btn {
+    background: #0d6efd;
+    color: white;
+    cursor: pointer;
+}
+.edit-btn:hover{
+    cursor: pointer;
+}
+/* Delete Button */
+.delete-btn {
+    background: #dc3545;
+    color: white;
+    cursor: pointer;
+}
+.delete-btn:hover{
+    cursor: pointer;
+}
+
+/* edit-popup */
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+    width: 400px;
+    background: white;
+    margin: 8% auto;
+    padding: 20px;
+    border-radius: 10px;
+    position: relative;
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.save-edit-btn {
+    background: #0d6efd;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px;
+}
