@@ -31,11 +31,7 @@
         <!-- DROPDOWN MENU ITEMS -->
         <div class="dropdown-container">
             <a href="{% url 'add_teacher' %}" id="menuAddTeacher">Add New Teacher</a>
-            <a href="#" id="menuEditTeacher">Edit Teacher</a>
             <a href="{% url 'all_teachers' %}">All Teachers</a>
-            <a href="#">Assign Class & Subject</a>
-            <a href="#">Timetable</a>
-            <!-- <a href="#">Remove Teacher</a> -->
         </div>
 
 
@@ -47,8 +43,8 @@
 
         <!-- DROPDOWN MENU ITEMS -->
         <div class="dropdown-container">
-            <a href="#">view student profile</a>
-            <a href="#">View Guardian details</a>
+            <a href="{% url 'all_students' %}">All Students</a>
+            <!-- <a href="">View Guardian details</a> -->
             <a href="#">View Attendence</a>
             <a href="#">View Marks</a>
             <a href="#">Check the class teacher</a>

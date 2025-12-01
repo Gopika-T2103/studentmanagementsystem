@@ -1,0 +1,72 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>All Students</title>
+    <link rel="stylesheet" href="{% static 'css/all_students.css' %}">
+</head>
+<body>
+
+<h2>All Students</h2>
+
+<table border="1" class="student-table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Roll No</th>
+            <th>Class</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for st in students %}
+        <tr>
+            <td class="open-popup"
+                data-name="{{ st.name }}"
+                data-class="{{ st.class_name }}"
+                data-guardian="{{ st.guardian_name }}"
+                data-phone="{{ st.guardian_phone }}"
+                data-address="{{ st.guardian_address }}"
+                data-teacher="{{ st.class_teacher.name }}"
+                data-stid="{{ st.id }}"
+            >
+                {{ st.name }}
+            </td>
+
+            <td>{{ st.roll_no }}</td>
+            <td>{{ st.class_name }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+<!-- ========== POPUP ========== -->
+<div id="popup" class="popup">
+    <div class="popup-content">
+
+        <span class="close">&times;</span>
+
+        <h2 id="pname"></h2>
+
+        <p><strong>Class:</strong> <span id="pclass"></span></p>
+        <p><strong>Class Teacher:</strong> <span id="pteacher"></span></p>
+
+        <h3>Guardian Details</h3>
+        <p><strong>Name:</strong> <span id="pguardian"></span></p>
+        <p><strong>Phone:</strong> <span id="pphone"></span></p>
+        <p><strong>Address:</strong> <span id="paddress"></span></p>
+
+        <div class="actions">
+            <a id="attLink" class="btn">View Attendance</a>
+            <a id="markLink" class="btn">View Marks</a>
+        </div>
+
+    </div>
+</div>
+
+<script src="{% static 'js/studentprofile_popup.js' %}"></script>
+
+</body>
+</html>

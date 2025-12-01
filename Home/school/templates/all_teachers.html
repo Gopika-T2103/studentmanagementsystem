@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/all_teacher.css' %}">
+    <link rel="stylesheet" href="{% static 'css/all_teacher.css' %}?v=1">
     <title>All_Teachers</title>
 </head>
 <body>
@@ -89,7 +89,7 @@
             <input type="text" id="edit_name" name="tname" placeholder="Enter teacher name" required>
             
             <label for="tid">Teacher ID</label>
-            <input type="hidden" id="edit_id" name="teacher_id" placeholder="Enter Teacher Id" required>
+            <input type="hidden" id="edit_id" name="id" placeholder="Enter Teacher Id" required>
 
             <label for="temail">Email</label>
             <input type="email" id="edit_email" name="temail" placeholder="Enter email" required >
@@ -104,6 +104,6 @@
         </form>
     </div>
 </div>
-<script src="{% static 'js/princi.js' %}?v=1"></script>
+<script src="{% static 'js/princi.js' %}?v=2"></script>
 </body>
 </html>

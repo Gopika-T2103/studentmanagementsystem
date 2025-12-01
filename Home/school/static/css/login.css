@@ -19,23 +19,20 @@ body{
     width: 280px;
     height: 500px;
     padding: 30px 35px;
-    background: rgba(255, 255, 255, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(183, 183, 185, 0.55);
+    border: 1px solid rgba(93, 69, 69, 0.2);
     margin-left: 550px;
     margin-top: 50px;
-    /* background-color:darkgray ; */
-    /* backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-    border-radius: 15px; */
 }
 .login-box p{
     color: #070707;
+    font-weight:bold;
 }
 .login-box #h2{
     text-align: center;
     margin-bottom: 30px;
     color: #070707;
+    font-weight:bold;
     font-size: 2rem;
 }
 
@@ -103,7 +100,7 @@ body{
 }
 
 .forgot a {
-      color: #0a0a0a;
+      color: #0e0d0d;
       text-decoration: none;
       font-size: 14px;
       font-weight: bold;
@@ -154,7 +151,7 @@ body{
     padding: 35px 30px;
     border-radius: 16px;
     /* GLASS EFFECT */
-    background: rgba(161, 158, 250, 0.15);
+    background: rgba(183, 183, 185, 0.15);
     border: 1px solid rgba(255, 255, 255, 0.3);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
@@ -168,7 +165,7 @@ body{
 /* HEADING */
 .sign-box h2 {
     text-align: center;
-    color: #fff;
+    color: #040404;
     margin-bottom: 20px;
     font-weight: bold;
     letter-spacing: 1px;
@@ -178,12 +175,15 @@ body{
 .form-group {
     margin-bottom: 15px;
 }
-
+.form-group ::placeholder{
+    color: rgb(17, 16, 16);
+    font-weight: bold;
+}
 label {
     font-size: 14px;
     margin-bottom: 5px;
     display: block;
-    color: #fff;
+    color: #080808;
 }
 
 input, select {
@@ -193,15 +193,16 @@ input, select {
     border: none;
     outline: none;
     background: rgba(255,255,255,0.3);
-    color: #fff;
+    color: #0a0a0a;
 }
 
 input::placeholder {
-    color: #efefef;
+    color: #080808;
 }
 
 select {
     color: black;
+    font-weight: bold;
 }
 
 /* FORGOT */
@@ -210,7 +211,7 @@ select {
     margin-bottom: 10px;
 }
 .forgot a {
-    color: #f3f3f3;
+    color: #f50404;
 }
 
 /* BUTTON */
@@ -243,4 +244,79 @@ p {
 p a {
     color: #fff;
     font-weight: bold;
+}
+
+/* ===========================
+   RESPONSIVE DESIGN FIXES
+   =========================== */
+
+/* Tablets */
+@media (max-width: 992px) {
+    .login-box,
+    .sign-box {
+        margin-left: 0;
+        margin-top: 20px;
+        width: 340px;
+        height: auto;
+    }
+
+    input, select {
+        width: 100%;   /* fixes 50% input issue */
+    }
+}
+
+/* Small Tablets / Large Phones */
+@media (max-width: 768px) {
+    .login-container {
+        padding: 20px;
+        justify-content: center;
+    }
+
+    .login-box,
+    .sign-box {
+        width: 320px;
+        padding: 25px 25px;
+        margin-left: 0;
+    }
+
+    .login-box #h2,
+    .sign-box h2 {
+        font-size: 1.6rem;
+    }
+
+    input, select {
+        width: 100%;
+    }
+}
+
+/* Mobile Phones */
+@media (max-width: 480px) {
+
+    .login-box,
+    .sign-box {
+        width: 90%;
+        height: auto;
+        padding: 20px;
+        margin: 0 auto;
+    }
+
+    .login-box #h2,
+    .sign-box h2 {
+        font-size: 1.4rem;
+    }
+
+    .form-group label {
+        font-size: 1rem;
+    }
+
+    input, select {
+        width: 100%;
+        padding: 8px;
+    }
+
+    .login-btn,
+    .signup-btn {
+        padding: 10px;
+        font-size: 14px;
+    }
 }

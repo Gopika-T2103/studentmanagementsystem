@@ -4,12 +4,138 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SchoolManagementSystem</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap">
+    <title>School Login | ABC International Public School</title>
+
+    <!-- <link rel="stylesheet" href="{% static 'css/front.css' %}"> -->
+
+    <style>
+/* Google Font */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+.hero {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Background Image */
+.bg-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+/* Dark Right Overlay (like the image) */
+.right-overlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 50%;
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(1px);
+}
+
+/* Text Content */
+.content {
+    position: absolute;
+    top: 50%;
+    right: 6%;
+    transform: translateY(-50%);
+    color: white;
+    z-index: 10;
+    text-align: left;
+}
+
+.content h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 15px;
+}
+
+.content p {
+    font-size: 1.3rem;
+    font-weight: 300;
+    margin-bottom: 30px;
+}
+
+/* BLUE LOGIN BUTTON (exact like your sample) */
+.login-btn {
+    background-color: #1e73be;     /* blue color */
+    color: white;
+    padding: 14px 40px;
+    font-size: 1.1rem;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    display: inline-block;
+    transition: 0.3s ease;
+}
+
+.login-btn:hover {
+    background-color: #155a96;
+}
+
+/* Responsive */
+@media(max-width: 768px) {
+
+    .right-overlay {
+        width: 100%;
+        background: rgba(0,0,0,0.6);
+    }
+
+    .content {
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+    }
+
+    .content h1 {
+        font-size: 2.2rem;
+    }
+
+    .content p {
+        font-size: 1rem;
+    }
+
+    .login-btn {
+        padding: 12px 30px;
+        font-size: 1rem;
+    }
+}
+
+
+</style>
 </head>
 <body>
-    <div class="container">
-        <h2>Welcome to ABC International Public School</h2>
-       <button type="button"><a href="login/">Login</a></button>
+    <div class="hero">
+        <img src="{% static 'img/front.png' %}" alt="not found" class="bg-img">
+
+        <div class="right-overlay"></div>
+
+        <div class="content">
+            <h1>Apex International<br>Public School</h1>
+            <p>Empowering Students<br>for a Brighter Future</p>
+
+            <a href="login/" class="login-btn">Login</a>
+        </div>
     </div>
 </body>
 </html>
+
+
+
+
+

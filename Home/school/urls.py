@@ -1,5 +1,6 @@
 from django.urls import path
-from . views import front_view,login_view,principal_dashboard,teacher_dashboard,student_dashboard,signup,add_teacher,all_teachers,update_teacher,delete_teacher
+from . views import front_view,login_view,principal_dashboard,teacher_dashboard,student_dashboard,signup,add_teacher,all_teachers,update_teacher,delete_teacher,all_students,student_attendance,student_marks
+
 urlpatterns=[
     path('',front_view,name='front'),
     path('login/',login_view,name='login'),
@@ -11,4 +12,8 @@ urlpatterns=[
     path('all_teachers/',all_teachers,name='all_teachers'),
     path('update_teacher/<int:id>/',update_teacher,name='update_teacher'),
     path('delete_teacher/<int:id>/',delete_teacher,name='delete_teacher'),
+    path('all_students/',all_students,name='all_students'),
+    path("student/<int:id>/attendance/",student_attendance, name="student_attendance"),
+    path("student/<int:id>/marks/",student_marks, name="student_marks"),
+
 ]

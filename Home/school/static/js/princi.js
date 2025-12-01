@@ -87,30 +87,36 @@ document.getElementById("addTeacherForm").onsubmit = function() {
             const modal = document.getElementById("editmodal");
             modal.style.display = "block";
 
-            document.getElementById("edit_name").value = this.dataset.name || "";
-            document.getElementById("edit_id").value = this.dataset.id || "";
-            document.getElementById("edit_email").value = this.dataset.email || "";
-            document.getElementById("edit_dept").value = this.dataset.dept || "";
-            document.getElementById("edit_assign").value = this.dataset.assign || "";
+            document.getElementById("edit_name").value = this.dataset.name ;
+            document.getElementById("edit_id").value = this.dataset.id;
+            document.getElementById("edit_email").value = this.dataset.email;
+            document.getElementById("edit_dept").value = this.dataset.dept;
+            document.getElementById("edit_assign").value = this.dataset.assign;
 
             // set form action to update url (use id from data-id)
-            document.getElementById("editTeacherForm").action = `/update_teacher/${this.dataset.id}/`;
+            document.getElementById("editTeacherForm").action = 
+            `/update_teacher/${this.dataset.id}/`;
         });
     });
 
     // CLOSE POPUP
-    const closeBtn = document.getElementById("closeedit");
-    if (closeBtn) {
-        closeBtn.onclick = () => {
-            const modal = document.getElementById("editmodal");
-            if (modal) modal.style.display = "none";
-        };
+    // const closeBtn = document.getElementById("closeedit");
+    // if (closeBtn) {
+    //     closeBtn.onclick = () => {
+    //         const modal = document.getElementById("editmodal");
+    //         if (modal) modal.style.display = "none";
+    //     };
+    // }
+
+    document.getElementById("closeedit").onclick = function () {
+        document.getElementById("editmodal").style.display = "none";
     }
 
+
     // Close when clicking outside modal content
-    window.onclick = (e) => {
+    window.onclick = function(e)  {
         const modal = document.getElementById("editmodal");
-        if (modal && e.target === modal) {
+        if (e.target === modal) {
             modal.style.display = "none";
         }
     };
@@ -125,3 +131,5 @@ document.getElementById("addTeacherForm").onsubmit = function() {
     });
 
 });
+
+

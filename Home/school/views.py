@@ -1,8 +1,9 @@
 
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from .models import customuser
 from .models import Teacher
 from django.contrib import messages
+from .models import Student,Attendance,Marks
 from django.contrib.auth import authenticate,login
 
 # Create your views here.
@@ -97,7 +98,6 @@ def add_teacher(request):
         tdept=request.POST.get("tdept")
         tassign=request.POST.get("tassign")
 
-        # print(tname, teacher_id, temail, tdept, tassign)
 
         Teacher.objects.create(
             tname=tname,
@@ -134,3 +134,27 @@ def delete_teacher(request,id):
     messages.success(request,"Teacher data delete Succesfully!")
 
     return redirect("all_teachers")
+
+
+
+def all_students(request):
+    students = Student.objects.all()
+    return render(request, "principal/all_students.html", {"students": students})
+
+
+def student_attendance(request, id):
+    Student = get_object_or_404(Student, id=id)
+    Attendance = Attendance.objects.filter(Student=Student)
+    return render(request, "principal/student_attendance.html", {
+        "student": Student,
+        "attendance": Attendance
+    })
+
+
+def student_marks(request, id):
+    Student = get_object_or_404(Student, id=id)
+    Marks = Marks.objects.filter(Student=Student)
+    return render(request, "principal/student_marks.html", {
+        "student": Student,
+        "marks": Marks
+    })
