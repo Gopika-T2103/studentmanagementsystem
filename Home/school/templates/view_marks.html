@@ -1,0 +1,48 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Marks - Class {{ assigned_class }}</title>
+    <link rel="stylesheet" href="{% static 'css/add_marks.css' %}">
+</head>
+
+<body>
+
+<h2 style="text-align: center;">Marks sheet for Class {{ assigned_class }}</h2>
+
+<a href="{% url 'teacher_dashboard' %}" class="back-btn"> Back to Dashboard</a>
+<a href="{% url 'add_marks' %}" class="back-btns"> Add marks</a>
+
+
+<!------------------------- VIEW MARKS TABLE ---------------------------->
+
+<table>
+    <tr>
+        <th>Roll No</th>
+        <th>Name</th>
+        <th>Mathematics</th>
+        <th>Biology</th>
+        <th>Physics</th>
+        <th>Chemistry</th>
+        <th>Malayalam</th>
+        <th>English</th>
+        <th>Hindi</th>
+    </tr>
+
+    {% for sid, item in marks_list.items %}
+    <tr>
+        <td>{{ item.student.roll_no }}</td>
+        <td>{{ item.student.name }}</td>
+        <td>{{ item.marks.Mathematics }}</td>
+        <td>{{ item.marks.Biology }}</td>
+        <td>{{ item.marks.Physics }}</td>
+        <td>{{ item.marks.Chemistry }}</td>
+        <td>{{ item.marks.Malayalam }}</td>
+        <td>{{ item.marks.English }}</td>
+        <td>{{ item.marks.Hindi }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+</body>
+</html>

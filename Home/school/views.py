@@ -5,6 +5,8 @@ from .models import Teacher
 from django.contrib import messages
 from .models import Student,Attendance,Marks
 from django.contrib.auth import authenticate,login
+from django.db.models import IntegerField
+from django.db.models.functions import Cast
 
 # Create your views here.
 def login_view(request):
@@ -80,8 +82,40 @@ def signup(request):
 def principal_dashboard(request):
     return render(request,'principal_dashboard.html')
 
+
+
 def teacher_dashboard(request):
-    return render(request,'teacher_dashboard.html')
+    # ensure user is teacher
+    if request.session.get('role') !='teacher':
+         return redirect('login')
+    teacher_email=request.session.get('email')
+
+    # get teacher record
+    teacher=Teacher.objects.get(temail=teacher_email)
+
+    assigned_class=teacher.tassign
+
+    students=Student.objects.filter(class_name=assigned_class)
+
+    # load all marks for those students
+    marks=Marks.objects.filter(student__in=students)
+
+    # subject details
+    subjects=['Mathematics','Biology','Physics','Chemistry','Malayalam','English','Hindi']
+
+    result_counts=[]
+    for sub in subjects:
+        passed=marks.filter(subject=sub,marks__gte=20).count()  #pass=marks>=20
+        result_counts.append(passed)
+    return render(request,'teacher_dashboard.html',{
+         "teacher":teacher,
+         'assigned_class':assigned_class,
+         'subjects':subjects,
+         "result_counts":result_counts
+    })
+
+
+
 
 def student_dashboard(request):
     return render(request,'student_dashboard.html')
@@ -158,3 +192,144 @@ def student_marks(request, id):
         "student": Student,
         "marks": Marks
     })
+
+
+def class_list_view(request):
+    # only teacher can access
+    if request.session.get('role') !='teacher':
+         return redirect('login')
+    teacher_email=request.session.get('email')
+    teacher=Teacher.objects.get(temail=teacher_email)
+    assigned_class=teacher.tassign
+
+    # load only assigned class students
+    students=Student.objects.filter(class_name=assigned_class)\
+        .annotate(
+             roll_int=Cast("roll_no",IntegerField())
+        ).order_by("roll_int")
+
+    return render(request,'teacher_class_list.html',{
+         "students":students,
+         "assigned_class":assigned_class
+    })
+
+
+
+def add_student(request):
+     if request.session.get('role')!='teacher':
+          return redirect('login')
+     teacher_email=request.session.get('email')
+     teacher=Teacher.objects.get(temail=teacher_email)
+     assigned_class=teacher.tassign
+
+     if request.method=='POST':
+          name=request.POST.get('name')
+          roll_no=request.POST.get("roll_no")
+          guardian_name=request.POST.get("guardian_name")
+          guardian_phone=request.POST.get("guardian_phone")
+          guardian_address=request.POST.get("guardian_address")
+
+          Student.objects.create(
+               name=name,
+               roll_no=roll_no,
+               class_name=assigned_class,
+               guardian_name=guardian_name,
+               guardian_phone=guardian_phone,
+               guardian_address=guardian_address
+          )
+
+          messages.success(request,"New Student added succesfully!!!")
+          return redirect("class_list")
+     return render(request,"add_student.html",{
+          "assigned_class":assigned_class
+     })
+
+
+
+def add_marks(request):
+    # Only teacher can access
+    if request.session.get('role') != 'teacher':
+        return redirect('login')
+
+    teacher_email = request.session.get('email')
+    teacher = Teacher.objects.get(temail=teacher_email)
+    assigned_class = teacher.tassign
+
+    # Load all students in this class
+    students = Student.objects.filter(class_name=assigned_class).annotate(
+        roll_int=Cast("roll_no", IntegerField())
+    ).order_by("roll_int")
+
+    # Subjects taught in the school
+    subjects = ['Mathematics', 'Biology', 'Physics', 'Chemistry', 'Malayalam', 'English', 'Hindi']
+
+    if request.method == "POST":
+        student_id = request.POST.get("student")
+        subject = request.POST.get("subject")
+        marks = request.POST.get("marks")
+
+        Marks.objects.create(
+            student_id=student_id,
+            subject=subject,
+            marks=marks
+        )
+
+        messages.success(request, "Marks Added Successfully!")
+        return redirect("add_marks")
+
+    return render(request, "add_marks.html", {
+        "students": students,
+        "subjects": subjects,
+        "assigned_class": assigned_class
+    })
+
+
+
+def view_marks(request):
+    # Only teacher can access
+    if request.session.get('role') != 'teacher':
+        return redirect('login')
+
+    teacher_email = request.session.get('email')
+    teacher = Teacher.objects.get(temail=teacher_email)
+    assigned_class = teacher.tassign
+
+    # load students of that class
+    students = Student.objects.filter(class_name=assigned_class).annotate(
+        roll_int=Cast("roll_no", IntegerField())
+    ).order_by("roll_int")
+
+    # Subjects in school
+    subjects = ['Mathematics', 'Biology', 'Physics', 'Chemistry', 'Malayalam', 'English', 'Hindi']
+
+    # Save marks on POST
+    if request.method == "POST":
+        student_id = request.POST.get("student")
+        subject = request.POST.get("subject")
+        marks = request.POST.get("marks")
+
+        Marks.objects.create(student_id=student_id,subject=subject,marks=marks)
+
+        messages.success(request,"Marks Added Succesfullly!!!")
+        return redirect("view_marks")
+        # GROUP MARKS BY STUDENT
+    marks_list = {}
+    for stu in students:
+        marks_list[stu.id] = {
+            'student': stu,
+            'marks': {sub: "-" for sub in subjects}
+        }
+
+    all_marks = Marks.objects.filter(student__in=students)
+
+    for m in all_marks:
+        if m.subject in subjects:
+            marks_list[m.student.id]['marks'][m.subject] = m.marks
+
+    return render(request, "view_marks.html", {
+        "students": students,
+        "subjects": subjects,
+        "assigned_class": assigned_class,
+        "marks_list": marks_list
+    })
+

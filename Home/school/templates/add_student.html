@@ -1,0 +1,39 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Student</title>
+    <link rel="stylesheet" href="{% static 'css/add_student.css' %}?v=1">
+</head>
+
+<body>
+
+<h2>Add Student - Class {{ assigned_class }}</h2>
+
+
+<a href="{% url 'teacher_dashboard' %}" class="back-btn">Back to Dashboard</a>
+<a href="{% url 'class_list' %}" class="back-btns">Back to Class List</a>
+
+<form action="" method="POST" class="add-form">
+    {% csrf_token %}
+
+    <label>Student Name</label>
+    <input type="text" name="name" placeholder="Enter student name" required>
+
+    <label>Roll Number</label>
+    <input type="text" name="roll_no" placeholder="Enter Roll number" required>
+
+    <label>Guardian Name</label>
+    <input type="text" name="guardian_name" placeholder="Enter guardian name" required>
+
+    <label>Guardian Phone</label>
+    <input type="number" name="guardian_phone" placeholder="Enter guardian phone" required>
+
+    <label>Address</label>
+    <textarea name="guardian_address" placeholder="Enter guardian address" required></textarea>
+
+    <button type="submit" class="save-btn">Add Student</button>
+</form>
+
+</body>
+</html>

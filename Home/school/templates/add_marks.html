@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Marks - Class {{ assigned_class }}</title>
+    <link rel="stylesheet" href="{% static 'css/add_marks.css' %}">
+</head>
+
+<body>
+
+<h2>Add Marks for Class {{ assigned_class }}</h2>
+
+<a href="{% url 'teacher_dashboard' %}" class="back-btn"> Back to Dashboard</a>
+<a href="{% url 'view_marks' %}" class="back-btns"> view marks</a>
+
+<form method="POST" class="add-form">
+    {% csrf_token %}
+
+    <label>Select Student</label>
+    <select name="student" required>
+        <option value="">-- Select Student --</option>
+        {% for s in students %}
+        <option value="{{ s.id }}">{{ s.roll_no }} - {{ s.name }}</option>
+        {% endfor %}
+    </select>
+
+    <label>Select Subject</label>
+    <select name="subject" required>
+        <option value="">-- Select Subject --</option>
+        {% for sub in subjects %}
+        <option value="{{ sub }}">{{ sub }}</option>
+        {% endfor %}
+    </select>
+
+    <label>Enter Marks</label>
+    <input type="number" min="0" max="100" name="marks" required>
+
+    <button type="submit" class="save-btn">Save Marks</button>
+</form>
+</body>
+</html>

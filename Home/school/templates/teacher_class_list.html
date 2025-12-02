@@ -1,0 +1,48 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Class {{ assigned_class }} - Student List</title>
+
+    <link rel="stylesheet" href="{% static 'css/teacher_class_list.css' %}?v=1">
+</head>
+
+<body>
+
+<h2>Class {{ assigned_class }} - Student List</h2>
+
+<a href="{% url 'teacher_dashboard' %}" class="back-btn">⬅ Back to Dashboard</a>
+<a href="{% url 'add_student' %}" class="back-btns">Add New Student</a>
+
+<table>
+    <thead>
+        <tr>
+            <th>Roll No</th>
+            <th>Name</th>
+            <th>Guardian Name</th>
+            <th>Phone</th>
+            <th>Address</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for s in students %}
+        <tr>
+            <td>{{ s.roll_no }}</td>
+            <td>{{ s.name }}</td>
+            <td>{{ s.guardian_name }}</td>
+            <td>{{ s.guardian_phone }}</td>
+            <td>{{ s.guardian_address }}</td>
+            <td>
+                <a href="#">Edit</a> |
+                <a href="#">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+</body>
+</html>

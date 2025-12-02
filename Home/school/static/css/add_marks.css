@@ -1,0 +1,180 @@
+/* General Page Setup */
+body {
+    font-family: Arial, sans-serif;
+    background: #f7f7f7;
+    padding: 30px;
+    margin: 0;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #333;
+    font-size: 26px;
+    font-weight: 700;
+}
+
+/* Back Button */
+.back-btn {
+    display: inline-block;
+    margin-bottom: 20px;
+    text-decoration: none;
+    padding: 10px 14px;
+    background: #6c74ff;
+    color: white;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: bold;
+    transition: 0.2s ease;
+}
+
+.back-btn:hover {
+    background: #4b52e0;
+}
+.back-btns {
+    display: inline-block;
+    margin-bottom: 20px;
+    text-decoration: none;
+    padding: 10px 14px;
+    background: #6c74ff;
+    color: white;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: bold;
+    transition: 0.2s ease;
+    right: 150px;
+    box-shadow: #7b81f7;
+}
+.back-btns:hover{
+    background: #4b52e0;
+    box-shadow: #555;
+}
+/* Form Container */
+.add-form {
+    width: 420px;
+    background: white;
+    padding: 25px;
+    margin: 0 auto;
+    box-shadow: 0 3px 14px rgba(0,0,0,0.1);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Labels */
+.add-form label {
+    font-weight: bold;
+    font-size: 14px;
+    margin-top: 12px;
+    margin-bottom: 5px;
+}
+
+/* Inputs + Select Dropdowns */
+.add-form input,
+.add-form select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    margin-bottom: 8px;
+    font-size: 15px;
+    transition: 0.2s ease;
+}
+
+.add-form input:focus,
+.add-form select:focus {
+    border-color: #6c74ff;
+    outline: none;
+    box-shadow: 0 0 4px rgba(108, 116, 255, 0.4);
+}
+
+/* Save Button */
+.save-btn {
+    margin-top: 18px;
+    width: 100%;
+    background: #6c74ff;
+    border: none;
+    padding: 12px;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.25s ease-out;
+}
+
+.save-btn:hover {
+    background: #4b52e0;
+}
+
+/* Mobile Responsive */
+@media (max-width: 480px) {
+    .add-form {
+        width: 90%;
+        padding: 20px;
+    }
+}
+
+
+
+/* -------------VIEW MARKS TABLE--------------------- */
+table {
+    width: 90%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.12);
+}
+
+/* Table Header */
+table th {
+    background: #6c74ff;
+    color: white;
+    padding: 14px;
+    text-align: left;
+    font-size: 15px;
+    letter-spacing: 0.5px;
+}
+
+/* Table Rows */
+table td {
+    padding: 12px;
+    font-size: 14px;
+    color: #333;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+/* Last Row No Border */
+table tr:last-child td {
+    border-bottom: none;
+}
+
+/* Hover Effect */
+table tr:hover td {
+    background: #f4f5ff;
+    transition: 0.2s ease;
+}
+
+/* Empty Message */
+table td[colspan] {
+    text-align: center;
+    padding: 18px;
+    background: #fafafa;
+    font-weight: bold;
+    color: #555;
+}
+
+/* Responsive Table */
+@media (max-width: 600px) {
+    table {
+        width: 100%;
+    }
+
+    table th,
+    table td {
+        padding: 10px;
+        font-size: 13px;
+    }
+}
