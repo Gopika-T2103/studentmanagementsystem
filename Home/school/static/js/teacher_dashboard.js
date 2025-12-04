@@ -77,3 +77,34 @@ document.addEventListener("DOMContentLoaded", function(){
   });
 });
 
+
+
+//--------------------------------------------- edit popup-------------------------------------//
+function openEditModal(id, roll, name, math, bio, phy, chem, mal, eng, hin) {
+    const modal = document.getElementById('editModal');
+    if (!modal) {
+        console.error('editModal element not found');
+        return;
+    }
+
+    // Fill the form
+    document.getElementById('editStudentId').value = id;
+    document.getElementById('editRoll').value = roll;
+    document.getElementById('editName').value = name;
+    document.getElementById('editMath').value = math;
+    document.getElementById('editBio').value = bio;
+    document.getElementById('editPhy').value = phy;
+    document.getElementById('editChem').value = chem;
+    document.getElementById('editMal').value = mal;
+    document.getElementById('editEng').value = eng;
+    document.getElementById('editHin').value = hin;
+
+    // Show popup
+    modal.style.display = "flex";
+}
+
+function closeEditModal() {
+    const modal = document.getElementById('editModal');
+    if (!modal) return;
+    modal.style.display = "none";
+}

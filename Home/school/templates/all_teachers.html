@@ -40,7 +40,7 @@
                         <th>Teacher Name</th>
                         <th>ID</th>
                         <th>Email id</th>
-                        <th>Department</th>
+                        <th>Subjects</th>
                         <th>Assigned Class</th>
                         <th>Actions</th>
                     </tr>
@@ -83,7 +83,7 @@
     <div class="modal-content">
         <span class="close-btn" id="closeedit">&times;</span>
         <h3>Edit Details</h3>
-        <form action="" id="editTeacherForm" method="POST">
+        <form action="update_teacher/<int:id>/" id="editTeacherForm" method="POST">
             {% csrf_token %}
             <label for="tname">Name</label>
             <input type="text" id="edit_name" name="tname" placeholder="Enter teacher name" required>

@@ -47,7 +47,7 @@
         <a href="{% url 'add_student' %}" >Add Student</a>
         <a href="{% url 'add_marks' %}" >Add / Edit Marks</a>
         <a href="{% url 'view_marks' %}" >view Marks</a>
-        <a href="#" onclick="viewAttendance()">Students Attendance</a>
+        <a href="{% url 'select_attendance_session' %}" >Students Attendance</a>
       </div>
 
       <div class="icon-text dropdown-btn">
@@ -63,11 +63,11 @@
 
       <div class="icon-text dropdown-btn">
         <i class='bx bx-user'></i>
-        <p class="dash">My Account</p>
+        <p class="dash">My profile</p>
         <i class='bx bx-chevron-down arrow'></i>
       </div>
       <div class="dropdown-container">
-        <a href="#" onclick="viewProfile()">View Profile</a>
+        <a href="#" onclick="viewProfile()">Edit Profile</a>
       </div>
 
       <div class="icon-text" onclick="logout()">
@@ -78,10 +78,10 @@
 
     <div class="sidebar-bottom">
       <div class="profile-mini">
-        <div class="avatar">S</div>
+        <div class="avatar">s</div>
         <div>
-          <div class="name">Susan</div>
-          <div class="role">Maths Teacher</div>
+          <div class="name">susan</div>
+          <div class="role">maths</div>
         </div>
       </div>
     </div>
@@ -103,7 +103,7 @@
       </div>
 
       <div class="card">
-        <h3>Total Students (Grade 10 A)</h3>
+        <h3>Total Students {{ assigned_class }}</h3>
         <hr>
         <!-- <p class="muted big">35 Students</p> -->
         <div class="card-actions">

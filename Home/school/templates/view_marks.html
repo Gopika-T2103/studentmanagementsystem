@@ -27,6 +27,7 @@
         <th>Malayalam</th>
         <th>English</th>
         <th>Hindi</th>
+        <th>Actions</th>
     </tr>
 
     {% for sid, item in marks_list.items %}
@@ -40,9 +41,64 @@
         <td>{{ item.marks.Malayalam }}</td>
         <td>{{ item.marks.English }}</td>
         <td>{{ item.marks.Hindi }}</td>
+         <td>
+            <span class="edit-btn"
+                onclick="openEditModal('{{ item.student.id }}','{{ item.student.roll_no }}','{{ item.student.name }}',
+                '{{ item.marks.Mathematics }}','{{ item.marks.Biology }}','{{ item.marks.Physics }}','{{ item.marks.Chemistry }}',
+                '{{ item.marks.Malayalam }}','{{ item.marks.English }}','{{ item.marks.Hindi }}')">
+                Edit
+            </span>
+
+            <a class="delete-btn" href="/teacher/delete_marks/{{ item.student.id }}/">Delete</a>
+        </td>
     </tr>
     {% endfor %}
 </table>
 
+
+<!-------------------------------------------- EDIT POPUP ------------------------------------>
+
+<div class="modal-bg" id="editModal">
+    <div class="modal-box">
+        <h3>Edit marks</h3>
+        <form action="/teacher/update_marks/" method="POST">
+            {% csrf_token %}
+            <input type="hidden" id="editStudentId" name="student_id">
+
+            <label>Roll Number</label>
+            <input type="text" id="editRoll" disabled>
+
+            <label>Name</label>
+            <input type="text" id="editName" disabled>
+
+            <label>Mathematics</label>
+            <input type="number" name="Mathematics" id="editMath">
+
+            <label>Biology</label>
+            <input type="number" name="Biology" id="editBio">
+
+            <label>Physics</label>
+            <input type="number" name="Physics" id="editPhy">
+
+            <label>Chemistry</label>
+            <input type="number" name="Chemistry" id="editChem">
+
+            <label>Malayalam</label>
+            <input type="number" name="Malayalam" id="editMal">
+
+            <label>English</label>
+            <input type="number" name="English" id="editEng">
+
+            <label>Hindi</label>
+            <input type="number" name="Hindi" id="editHin">
+
+            <div class="modal-actions">
+                <button type="submit" class="save-btn">Save</button>
+                <button type="button" class="close-btn" onclick="closeEditModal()">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="{% static 'js/teacher_dashboard.js' %}"></script>
 </body>
 </html>

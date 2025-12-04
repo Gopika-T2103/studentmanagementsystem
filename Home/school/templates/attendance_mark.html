@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mark Attendance</title>
+    <link rel="stylesheet" href="{% static 'css/attendance.css' %}">
+</head>
+
+<body>
+<div class="container">
+    <h2>{{ session|title }} Attendance - {{ today }}</h2>
+    <h3>Class: {{ assigned_class }}</h3>
+
+    <div class="summary">
+        <p><strong>Morning Present:</strong> {{ morning_present }}</p>
+        <p><strong>Afternoon Present:</strong> {{ afternoon_present }}</p>
+        <p><strong>Total Present:</strong> {{ total_present }}</p>
+        <p><strong>Total Absent:</strong> {{ total_absent }}</p>
+    </div>
+
+    <form method="POST">
+        {% csrf_token %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Roll No</th>
+                    <th>Student Name</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for stu in students %}
+                <tr>
+                    <td>{{ stu.roll_no }}</td>
+                    <td>{{ stu.name }}</td>
+
+                    <td>
+                        <select name="status_{{ stu.id }}">
+                            <option value="Present">Present</option>
+                            <option value="Absent">Absent</option>
+                        </select>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <button type="submit" class="btn-submit">Save Attendance</button>
+    </form>
+
+    <center>
+        <a href="{% url 'select_attendance_session' %}" class="back-btn">Back</a>
+    </center>
+</div>
+</body>
+</html>

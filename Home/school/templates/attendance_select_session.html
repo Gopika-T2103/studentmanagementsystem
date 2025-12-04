@@ -1,0 +1,19 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Select Attendance Session</title>
+    <link rel="stylesheet" href="{% static 'css/attendance.css' %}">
+</head>
+
+<body>
+<div class="container">
+    <h2>Select Attendance Session</h2>
+
+    <div class="session-buttons">
+        <a href="{% url 'mark_attendance' 'morning' %}" class="btn">Morning Attendance</a>
+        <a href="{% url 'mark_attendance' 'afternoon' %}" class="btn">Afternoon Attendance</a>
+    </div>
+</div>
+</body>
+</html>

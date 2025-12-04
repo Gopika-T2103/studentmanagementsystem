@@ -7,6 +7,8 @@ from .models import Student,Attendance,Marks
 from django.contrib.auth import authenticate,login
 from django.db.models import IntegerField
 from django.db.models.functions import Cast
+from datetime import date
+import datetime
 
 # Create your views here.
 def login_view(request):
@@ -85,9 +87,11 @@ def principal_dashboard(request):
 
 
 def teacher_dashboard(request):
+   
     # ensure user is teacher
     if request.session.get('role') !='teacher':
          return redirect('login')
+    
     teacher_email=request.session.get('email')
 
     # get teacher record
@@ -95,7 +99,27 @@ def teacher_dashboard(request):
 
     assigned_class=teacher.tassign
 
+    # get all students in the class
     students=Student.objects.filter(class_name=assigned_class)
+
+    today = date.today()
+
+    morning_present = Attendance.objects.filter(
+        student__class_name=assigned_class,
+        date=today,
+        session="morning",
+        status="Present"
+    ).count()
+
+    afternoon_present = Attendance.objects.filter(
+        student__class_name=assigned_class,
+        date=today,
+        session="afternoon",
+        status="Present"
+    ).count()
+
+    total_present = morning_present + afternoon_present
+    total_absent = (len(students) * 2) - total_present
 
     # load all marks for those students
     marks=Marks.objects.filter(student__in=students)
@@ -107,14 +131,21 @@ def teacher_dashboard(request):
     for sub in subjects:
         passed=marks.filter(subject=sub,marks__gte=20).count()  #pass=marks>=20
         result_counts.append(passed)
-    return render(request,'teacher_dashboard.html',{
-         "teacher":teacher,
-         'assigned_class':assigned_class,
-         'subjects':subjects,
-         "result_counts":result_counts
+
+    return render(request,'teacher_dashboard.html', {
+        "teacher":teacher,
+        'assigned_class':assigned_class,
+        'subjects':subjects,
+        "result_counts":result_counts,
+
+        "morning_present": morning_present,
+        "afternoon_present": afternoon_present,
+        "total_present": total_present,
+        "total_absent": total_absent,
     })
 
 
+    
 
 
 def student_dashboard(request):
@@ -268,10 +299,14 @@ def add_marks(request):
         subject = request.POST.get("subject")
         marks = request.POST.get("marks")
 
+        student_obj=Student.objects.get(id=student_id)
+
         Marks.objects.create(
-            student_id=student_id,
+            student=student_obj,
             subject=subject,
-            marks=marks
+            marks=marks,
+            student_name=student_obj.name,
+            class_name=student_obj.class_name,
         )
 
         messages.success(request, "Marks Added Successfully!")
@@ -333,3 +368,125 @@ def view_marks(request):
         "marks_list": marks_list
     })
 
+
+# edit Marks
+
+def update_marks(request):
+    if request.method == "POST":
+        student_id = request.POST.get("student_id")
+        subjects = ['Mathematics','Biology','Physics','Chemistry','Malayalam','English','Hindi']
+
+        student = Student.objects.get(id=student_id)
+
+        for sub in subjects:
+            new_marks = request.POST.get(sub)
+
+            if new_marks and new_marks != "-":
+                Marks.objects.update_or_create(
+                    student=student,
+                    subject=sub,
+                    defaults={'marks': new_marks}
+                )
+
+        return redirect("view_marks")
+    
+
+def select_attendance_session(request):
+    if request.session.get('role') !='teacher':
+        return redirect('login')
+    
+    return render(request,'attendance_select_session.html')
+
+
+def mark_attendance(request, session):
+    if request.session.get('role') != 'teacher':
+        return redirect('login')
+
+    # Block weekends
+    if datetime.date.today().weekday() > 4:
+        return render(request, "error.html", {"message": "Attendance allowed only Monday–Friday"})
+
+    teacher_email = request.session.get('email')
+    teacher = Teacher.objects.get(temail=teacher_email)
+    assigned_class = teacher.tassign
+
+    students = Student.objects.filter(class_name=assigned_class).order_by("roll_no")
+    today = date.today()
+
+    if request.method == "POST":
+        for stu in students:
+            status = request.POST.get(f"status_{stu.id}")
+
+            Attendance.objects.update_or_create(
+                student=stu,
+                date=today,
+                session=session,
+                defaults={
+                    "status": status,
+                    "student_name": stu.name,
+                    "student_class": stu.class_name,
+                }
+            )
+
+        messages.success(request, f"{session.capitalize()} attendance saved!")
+        return redirect("mark_attendance", session=session)
+
+    # Count attendance for summary
+    morning_present = Attendance.objects.filter(
+        student__class_name=assigned_class,
+        date=today,
+        session="morning",
+        status="Present"
+    ).count()
+
+    afternoon_present = Attendance.objects.filter(
+        student__class_name=assigned_class,
+        date=today,
+        session="afternoon",
+        status="Present"
+    ).count()
+
+    total_present = morning_present + afternoon_present
+    total_absent = (len(students) * 2) - total_present
+
+    return render(request, "attendance_mark.html", {
+        "students": students,
+        "session": session,
+        "today": today,
+        "assigned_class": assigned_class,
+        "morning_present": morning_present,
+        "afternoon_present": afternoon_present,
+        "total_present": total_present,
+        "total_absent": total_absent,
+    })
+
+
+
+def edit_attendance(request):
+    if request.session.get('role') != 'teacher':
+        return redirect('login')
+
+    teacher_email = request.session.get('email')
+    teacher = Teacher.objects.get(temail=teacher_email)
+    assigned_class = teacher.tassign
+
+    today = date.today()
+
+    records = Attendance.objects.filter(
+        student__class_name=assigned_class,
+        date=today
+    ).order_by("student__roll_no")
+
+    if request.method == "POST":
+        for row in records:
+            new_status = request.POST.get(f"status_{row.id}")
+            row.status = new_status
+            row.save()
+
+        messages.success(request, "Attendance updated successfully!")
+        return redirect("edit_attendance")
+
+    return render(request, "attendance_edit.html", {
+        "records": records,
+        "today": today,
+    })

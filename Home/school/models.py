@@ -25,7 +25,9 @@ class Teacher(models.Model):
     teacher_id=models.CharField(max_length=255,unique=True)
     temail=models.CharField(max_length=255)
     tdept=models.CharField(max_length=255)
-    tassign=models.CharField(max_length=255)
+    tassign=models.CharField(max_length=255,null=True,blank=True)
+    # user = models.OneToOneField(customuser, on_delete=models.CASCADE)
+    # subject = models.CharField(max_length=50) 
 
     def __str__(self):
         return self.tname
@@ -41,7 +43,7 @@ class Teacher(models.Model):
 
 class Student(models.Model):
     name=models.CharField(max_length=255)
-    roll_no=models.IntegerField(max_length=255)
+    roll_no=models.IntegerField()
     class_name = models.CharField(max_length=50)
     # class_teacher = models.ForeignKey(classteacher, on_delete=models.SET_NULL, null=True)
 
@@ -51,15 +53,56 @@ class Student(models.Model):
 
     def __str__(self):
         return self.name
-    
+    # Attendance Percentage Function
+    def attendance_percentage(self):
+        from .models import Attendance   # avoid circular import
+
+        records = Attendance.objects.filter(student=self)
+
+        if not records:
+            return 0   # no attendance → 0%
+
+        # Each Present = 1 point (morning or afternoon)
+        earned = sum(1 for r in records if r.status == "Present")
+        total = len(records)  # total sessions
+
+        return round((earned / total) * 100, 2)
+
 
 class Attendance(models.Model):
-    student = models.ForeignKey(Student, on_delete=models.CASCADE)
-    date = models.DateField()
-    status = models.CharField(max_length=10)   # Present / Absent
+    SESSION_CHOICES=(
+        ('morning','Morning'),
+        ('afternoon','Afternoon'),
+    )
 
+    STATUS_CHOICES = (
+        ('Present', 'Present'),
+        ('Absent', 'Absent'),
+    )
+
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    student_name=models.CharField(max_length=255,default='Unknown')
+    student_class=models.CharField(max_length=20,default='Unknown')
+
+    date = models.DateField()
+    session=models.CharField(max_length=20,choices=SESSION_CHOICES,default='morning')
+    status = models.CharField(max_length=10,choices=STATUS_CHOICES)   # Present / Absent
+
+    class Meta:
+        unique_together=('student','date','session')
+
+    def __str__(self):
+        return f"{self.student_name} - {self.date} ({self.session})"
+    
 
 class Marks(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     subject = models.CharField(max_length=50)
     marks = models.IntegerField()
+    student_name=models.CharField(max_length=255,null=True,blank=True)
+    class_name=models.CharField(max_length=255,null=True,blank=True)
+
+    class Meta:
+        unique_together=('student','subject')
+
+

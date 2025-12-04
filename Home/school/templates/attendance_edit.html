@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Attendance</title>
+    <link rel="stylesheet" href="{% static 'css/attendance.css' %}">
+</head>
+
+<body>
+<div class="container">
+    <h2>Edit Attendance - {{ today }}</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Student</th>
+                    <th>Session</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for item in records %}
+                <tr>
+                    <td>{{ item.student_name }}</td>
+                    <td>{{ item.session|title }}</td>
+
+                    <td>
+                        <select name="status_{{ item.id }}">
+                            <option value="Present" {% if item.status == "Present" %}selected{% endif %}>Present</option>
+                            <option value="Absent" {% if item.status == "Absent" %}selected{% endif %}>Absent</option>
+                        </select>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <button type="submit" class="btn-submit">Update Attendance</button>
+    </form>
+
+    <center>
+        <a href="{% url 'select_attendance_session' %}" class="back-btn">Back</a>
+    </center>
+</div>
+</body>
+</html>
