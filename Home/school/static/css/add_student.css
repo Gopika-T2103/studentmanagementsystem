@@ -85,3 +85,8 @@ h2{
     text-decoration: underline;
     bottom: 40px;
 }
+
+.option
+{
+    width: 100%;
+}

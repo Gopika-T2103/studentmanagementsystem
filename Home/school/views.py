@@ -180,17 +180,19 @@ def all_teachers(request):
     return render(request,"all_teachers.html",{"teachers":teachers})
 
 
-def update_teacher(request,id):
-    teacher=Teacher.objects.get(id=id)
-    if request.method=='POST':
-         teacher.tname=request.POST.get('tname')
-         teacher.temail=request.POST.get('temail')
-         teacher.tdept=request.POST.get('tdept')
-         teacher.tassign=request.POST.get('tassign')
-         teacher.save()
+def update_teacher(request, id):
+    teacher = Teacher.objects.get(id=id)
 
-         messages.success(request,"Teacher details Updated Succesfully!")
-         return redirect("all_teachers")
+    if request.method == 'POST':
+        teacher.tname = request.POST.get('tname')
+        teacher.temail = request.POST.get('temail')
+        teacher.tdept = request.POST.get('tdept')
+        teacher.tassign = request.POST.get('tassign')
+        teacher.save()
+
+        messages.success(request, "Teacher details updated successfully!")
+        return redirect("all_teachers")
+
     return redirect("all_teachers")
 
 def delete_teacher(request,id):
@@ -256,6 +258,12 @@ def add_student(request):
      if request.method=='POST':
           name=request.POST.get('name')
           roll_no=request.POST.get("roll_no")
+
+          admission_number = request.POST.get('admission_number')
+          admission_date = request.POST.get('admission_date')
+          date_of_birth = request.POST.get('date_of_birth')
+          gender = request.POST.get('gender')
+
           guardian_name=request.POST.get("guardian_name")
           guardian_phone=request.POST.get("guardian_phone")
           guardian_address=request.POST.get("guardian_address")
@@ -264,6 +272,13 @@ def add_student(request):
                name=name,
                roll_no=roll_no,
                class_name=assigned_class,
+
+               admission_number=admission_number,
+               admission_date=admission_date,
+               date_of_birth=date_of_birth,
+               gender=gender,
+               status="Active",
+
                guardian_name=guardian_name,
                guardian_phone=guardian_phone,
                guardian_address=guardian_address
@@ -271,6 +286,7 @@ def add_student(request):
 
           messages.success(request,"New Student added succesfully!!!")
           return redirect("class_list")
+     
      return render(request,"add_student.html",{
           "assigned_class":assigned_class
      })
@@ -490,3 +506,32 @@ def edit_attendance(request):
         "records": records,
         "today": today,
     })
+
+
+
+# edit the student details in the teacher dashboard
+
+def edit_student(request,id):
+    student=get_object_or_404(Student,id=id)
+    if request.method=='POST':
+        student.name=request.POST.get('name')
+        student.roll_no=request.POST.get("roll_no")
+
+        student.admission_number=request.POST.get('admission_number')
+        student.admission_date=request.POST.get('admission_date')
+        student.date_of_birth=request.POST.get('date_of_birth')
+        student.gender=request.POST.get('gender')
+
+        student.status = request.POST.get('status')
+        student.passed_out_year = request.POST.get('passed_out_year')
+        student.tc_issued_date = request.POST.get('tc_issued_date')
+
+        student.guardian_name=request.POST.get("guardian_name")
+        student.guardian_phone=request.POST.get("guardian_phone")
+        student.guardian_address=request.POST.get("guardian_address")
+        print("Passed Out Year Received =", request.POST.get('passed_out_year'))
+        student.save()
+
+        messages.success(request,"Student details updated successfully!!")
+        return redirect('class_list')
+    return redirect("class_list")

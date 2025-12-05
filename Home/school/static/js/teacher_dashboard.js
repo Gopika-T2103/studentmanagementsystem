@@ -108,3 +108,48 @@ function closeEditModal() {
     if (!modal) return;
     modal.style.display = "none";
 }
+
+
+
+// edit opup for student class_list
+
+function openEditModal(id, name, roll,adnmbr,addate,dob,gender,status,passedout,tcdate, gname, gphone, gaddress) {
+    document.getElementById("editModal").style.display = "block";
+
+    // Fill form fields
+    document.getElementById("edit_name").value = name;
+    document.getElementById("edit_roll_no").value = roll;
+
+    document.getElementById("edit_admission_number").value = adnmbr;
+    document.getElementById("edit_admission_date").value = addate;
+    document.getElementById("edit_date_of_birth").value = dob;
+    document.getElementById("edit_gender").value = gender;
+    document.getElementById("edit_status").value = status;
+    document.getElementById("edit_passed_out_year").value = passedout;
+    document.getElementById("edit_tc_issued_date").value = tcdate;
+
+    document.getElementById("edit_guardian_name").value = gname;
+    document.getElementById("edit_guardian_phone").value = gphone;
+    document.getElementById("edit_guardian_address").value = gaddress;
+    
+
+
+
+    // Update form action
+    document.getElementById("editForm").action = "/teacher/edit_student/" + id + "/";
+}
+
+function closeModal() {
+    document.getElementById("editModal").style.display = "none";
+}
+
+
+
+// deletebutton
+function deleteRow(element) {
+    if (confirm("Are you sure you want to remove this student from the list? This will NOT delete from database.")) {
+        // Remove the entire row
+        element.closest("tr").remove();
+    }
+}
+

@@ -14,7 +14,6 @@ h2 {
     font-weight: 700;
 }
 
-/* Back Button */
 .back-btn {
     display: inline-block;
     margin-bottom: 20px;
@@ -52,7 +51,7 @@ h2 {
 /* Form Container */
 .add-form {
     width: 420px;
-    background: white;
+    background: rgb(247, 243, 243);
     padding: 25px;
     margin: 0 auto;
     box-shadow: 0 3px 14px rgba(0,0,0,0.1);
@@ -200,8 +199,9 @@ table td[colspan] {
 /* Modal Box - compact */
 .modal-box {
     background: white;
-    width: 360px;              /* smaller width */
-    padding: 18px 22px;        /* reduced padding */
+    width: 50%;    
+    height: 100%;          /* smaller width */
+    padding: 28px 36px;        /* reduced padding */
     border-radius: 12px;
     box-shadow: 0 3px 15px rgba(0,0,0,0.25);
     max-height: 85vh;          /* prevent tall popup */
@@ -241,6 +241,7 @@ table td[colspan] {
     border-radius: 6px;
     cursor: pointer;
     font-size: 14px;
+    width: 90%;
 }
 
 .close-btn {
@@ -251,12 +252,25 @@ table td[colspan] {
     border-radius: 6px;
     cursor: pointer;
     font-size: 14px;
+    margin-left: 20px;
 }
 
 /* Edit/Delete text buttons */
-.edit-btn, .delete-btn {
-    color: #3366ff;
+.edit-btn {
+    color: #f8f9fc;
     cursor: pointer;
     font-size: 14px;
     margin-right: 6px;
+    background-color: #4b52e0;
+    padding: 4px;
+    border-radius: 4px;
+}
+.delete-btn {
+    color: #f6f4f4;
+    cursor: pointer;
+    font-size: 14px;
+    margin-right: 6px;
+    background-color: #f80606;
+    padding: 4px;
+    border-radius: 5px;
 }

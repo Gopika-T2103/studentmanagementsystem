@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/all_teacher.css' %}?v=1">
+    <link rel="stylesheet" href="{% static 'css/all_teacher.css' %}?v=2">
     <title>All_Teachers</title>
 </head>
 <body>
@@ -53,7 +53,7 @@
                         <td>{{ t.temail }}</td>
                         <td>{{ t.tdept }}</td>
                         <td>{{ t.tassign }}</td>
-                        <td>
+                        <!-- <td class="action-buttons">
                             <button class="edit-btn"
                                 data-name="{{t.tname}}"
                                 data-id="{{t.id}}"
@@ -62,13 +62,16 @@
                                 data-assign="{{t.tassign}}">
                                 Edit
                             </button>
-                            <a href="{% url 'delete_teacher' t.id %}" class="delete-link">
-
-                                <button class="delete-btn">Delete</button>
-                            </a>
+                            <a href="{% url 'delete_teacher' t.id %}" class="delete-btn delete-link">Delete</a>
+                        </td> -->
+                        <td class="action-buttons">
+                             <a href="#" class="edit-btn" 
+                            onclick="openEditModal('{{ t.tname }}','{{ t.id }}','{{t.email }}', '{{ t.dept }}', '{{ t.assign }}')">
+                            Edit
+                            </a> 
+                            <a href="#" onclick="deleteRow(this)" class="delete">Delete</a>
                         </td>
                     </tr>
-                
                     {% empty %}
                 <tr>
                     <td colspan="5">No teachers added yet.</td>
@@ -79,31 +82,37 @@
         </div>
 </div>
 
-<div class="modal" id="editmodal">
+<!-- EDIT MODAL -->
+<div class="modal" id="editModal">
     <div class="modal-content">
-        <span class="close-btn" id="closeedit">&times;</span>
-        <h3>Edit Details</h3>
-        <form action="update_teacher/<int:id>/" id="editTeacherForm" method="POST">
+        <span class="close-btn" id="closeEdit">&times;</span>
+
+        <h3>Edit Teacher Details</h3>
+
+        <form id="editTeacherForm" method="POST">
             {% csrf_token %}
-            <label for="tname">Name</label>
-            <input type="text" id="edit_name" name="tname" placeholder="Enter teacher name" required>
+
+            <label>Name</label>
+            <input type="text" id="edit_name" name="tname" required>
             
-            <label for="tid">Teacher ID</label>
-            <input type="hidden" id="edit_id" name="id" placeholder="Enter Teacher Id" required>
+            <label>Id</label>
+            <input type="text" id="edit_id" name="tid" required>
 
-            <label for="temail">Email</label>
-            <input type="email" id="edit_email" name="temail" placeholder="Enter email" required >
+            <label>Email</label>
+            <input type="email" id="edit_email" name="temail" required>
 
-            <label for="tdept">Department</label>
-            <input type="text" id="edit_dept" name="tdept" placeholder="Enter departmant" required>
+            <label>Department</label>
+            <input type="text" id="edit_dept" name="tdept" required>
 
-            <label for="tassign"> Assigned class</label>
-            <input type="text" id="edit_assign" name="tassign" placeholder="Assigned class" required>
+            <label>Assigned Class</label>
+            <input type="text" id="edit_assign" name="tassign">
 
-            <button type="submit" class="save-edit-btn">Save Changes</button>
+            <button type="submit" class="save-btn">Save Changes</button>
         </form>
+
     </div>
 </div>
-<script src="{% static 'js/princi.js' %}?v=2"></script>
+
+<script src="{% static 'js/all_teacher.js' %}"></script>
 </body>
 </html>

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>Class {{ assigned_class }} - Student List</title>
 
-    <link rel="stylesheet" href="{% static 'css/teacher_class_list.css' %}?v=2">
+    <link rel="stylesheet" href="{% static 'css/teacher_class_list.css' %}?v=4">
 </head>
 
 <body>
@@ -20,6 +20,13 @@
         <tr>
             <th>Roll No</th>
             <th>Name</th>
+            <th>Admission No</th>
+            <th>Admission Date</th>
+            <th>DOB</th>
+            <th>Gender</th>
+            <th>Status</th>
+            <th>Passed Out Year</th>
+            <th>TC Issued Date</th>
             <th>Guardian Name</th>
             <th>Phone</th>
             <th>Address</th>
@@ -32,17 +39,108 @@
         <tr>
             <td>{{ s.roll_no }}</td>
             <td>{{ s.name }}</td>
+            <td>{{ s.admission_number }}</td>
+            <td>{{ s.admission_date }}</td>
+            <td>{{ s.date_of_birth }}</td>
+            <td>{{ s.gender }}</td>
+            <td>
+                <span class="status-badge 
+                    {% if s.status == 'Active' %}status-active
+                    {% elif s.status == 'Inactive' %}status-inactive
+                    {% elif s.status == 'Passed Out' %}status-passed
+                    {% elif s.status == 'TC Issued' %}status-tc
+                    {% endif %}
+                ">
+            {{ s.status }}
+                </span>
+            </td>
+            <td>{{ s.passed_out_year }}</td>
+            <td>{{ s.tc_issued_date }}</td>
             <td>{{ s.guardian_name }}</td>
             <td>{{ s.guardian_phone }}</td>
             <td>{{ s.guardian_address }}</td>
-            <td>
-                <a href="#">Edit</a> |
-                <a href="#">Delete</a>
+           <td class="actions">
+                <a href="#" class="edit" 
+                    onclick="openEditModal('{{ s.id }}','{{ s.name }}','{{ s.roll_no }}', '{{ s.admission_number }}', '{{ s.admission_date }}', 
+                    '{{ s.date_of_birth }}', '{{ s.gender }}', '{{ s.status }}', '{{ s.passed_out_year }}', '{{ s.tc_issued_date }}',
+                    '{{ s.guardian_name }}','{{ s.guardian_phone }}','{{ s.guardian_address }}')">
+                    Edit
+                </a> 
+                <a href="#" onclick="deleteRow(this)" class="delete">Delete</a>
             </td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
+
+
+
+
+<!-- POPUP MODAL -->
+<div id="editModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+
+    <h3>Edit Student</h3>
+
+    <form id="editForm" method="POST">
+      {% csrf_token %}
+      
+      <label>Name:</label>
+      <input type="text" id="edit_name" name="name" required>
+
+      <label>Roll No:</label>
+      <input type="number" id="edit_roll_no" name="roll_no" required>
+
+      
+    <label>Admission Number</label>
+    <input type="text" name="admission_number"  id="edit_admission_number" placeholder="Enter Admission number" required>
+
+    <label>Admission Date</label>
+    <input type="date" name="admission_date" id="edit_admission_date" placeholder="Admission Date" required>
+
+    <label>Date of Birth</label>
+    <input type="date" name="date_of_birth" id="edit_date_of_birth" placeholder="Date of Birth" required>
+
+    <label>Gender</label>
+    <select name="gender" id="edit_gender" required >
+        <option value="select" class="option">------select------</option>
+        <option class="option">Male</option>
+        <option class="option">Female</option>
+        <option class="option">Other</option>
+    </select>
+
+      <label>Status</label>
+      <select id="edit_status" name="status">
+          <option value="choose">------Select------</option>
+          <option>Active</option>
+          <option>Inactive</option>
+          <option>Passed Out</option>
+          <option>TC Issued</option>
+      </select>
+
+      <label>Passed Out Year</label>
+      <input type="text" id="edit_passed_out_year" name="passed_out_year" required>
+
+      <label>TC Issued Date</label>
+      <input type="date" id="edit_tc_issued_date" name="tc_issued_date" required>
+
+
+      <label>Guardian Name:</label>
+      <input type="text" id="edit_guardian_name" name="guardian_name" required>
+
+      <label>Phone:</label>
+      <input type="text" id="edit_guardian_phone" name="guardian_phone" required>
+
+      <label>Address:</label>
+      <textarea id="edit_guardian_address" name="guardian_address" required></textarea>
+
+      <button type="submit" class="save-btn">Update</button>
+    </form>
+  </div>
+</div>
+
+<script src="{% static 'js/teacher_dashboard.js' %}?v=2"></script>
 
 </body>
 </html>

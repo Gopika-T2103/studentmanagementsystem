@@ -57,3 +57,196 @@ table th {
 table tr:hover {
     background: #f1f1f1;
 }
+
+
+
+
+/* edit popup */
+
+/* Dark background */
+.modal {
+    display: none;
+    position:fixed;
+    top: 0;
+     left: 0;
+    width: 100%; 
+    height: 100%;
+    background: rgba(91, 89, 89, 0.45);
+    z-index: 9999;
+    overflow-y: auto;
+    padding-top: 40px;
+}
+
+/* Popup box */
+.modal-content {
+    background: #fbf9f9;
+    width: 400px;
+    margin:  auto;
+    padding: 0;
+    border-radius: 12px;
+    overflow-y: auto;
+    max-height: 85vh;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.25);
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* Header */
+.modal-content h3 {
+    margin: 0;
+    padding: 16px 20px;
+    background: #f1f1f1;
+    border-bottom: 1px solid #ddd;
+    font-size: 19px;
+    font-weight: 600;
+}
+
+/* Close button */
+.close {
+    position: absolute;
+    margin-left: 360px;
+    margin-top: 20px;
+    font-size: 2rem;
+    cursor: pointer;
+    color: #0b0b0b;
+}
+.close:hover{
+    color: red;
+}
+
+/* Form styling */
+form {
+    padding: 20px;
+}
+
+label {
+    font-size: 14px;
+    font-weight: 500;
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+input, textarea {
+    width: 90%;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    margin-bottom: 10px;
+    outline: none;
+}
+
+input:focus, textarea:focus {
+    border-color: #4a90e2;
+}
+
+/* Button container */
+.popup-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+/* Save Button */
+.save-btn {
+    background: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 6px;
+    border: none;
+    width: 48%;
+    cursor: pointer;
+}
+.save-btn:hover{
+    background-color: green;
+}
+
+
+select {
+    width: 95%;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    margin-bottom: 10px;
+    outline: none;
+    background: white;
+    appearance: none; /* Makes select look like an input */
+    background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 14px;
+}
+
+select:focus {
+    border-color: #4a90e2;
+}
+
+.status-badge {
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: white;
+    display: inline-block;
+}
+
+/* Status Colors */
+.status-active {
+    background: #28a745;   /* green */
+}
+
+.status-inactive {
+    background: #ff9800;   /* orange */
+}
+
+.status-passed {
+    background: #2196f3;   /* blue */
+}
+
+.status-tc {
+    background: #e53935;   /* red */
+}
+
+.actions {
+    white-space: nowrap;  
+    text-align: center;
+}
+
+.actions a {
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 2px 6px;
+    text-decoration: none;
+}
+
+.edit {
+    color: white;
+    background: #5304f0;
+    padding: 4px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    text-decoration: none;
+}
+.edit:hover {
+    background: #0535f1;
+}
+.delete {
+    color: white;
+    background: #e63946;
+    padding: 4px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    text-decoration: none;
+}
+.delete:hover {
+    background: #f2041c;
+}
+
+
+/* Smooth popup animation */
+@keyframes fadeIn {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}

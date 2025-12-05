@@ -127,51 +127,39 @@
     font-weight: bold;
 }
 
-/* ACTION BUTTONS */
-.action-btn {
-    padding: 7px 12px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    margin-right: 6px;
-    font-size: 13px;
+.action-buttons {
+    display: flex;
+    gap: 8px;
 }
 
-/* Edit Button */
+.edit-btn, .delete-btn {
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    color: white;
+}
+
 .edit-btn {
     background: #0d6efd;
-    color: white;
-    cursor: pointer;
-}
-.edit-btn:hover{
-    cursor: pointer;
-}
-/* Delete Button */
-.delete-btn {
-    background: #dc3545;
-    color: white;
-    cursor: pointer;
-}
-.delete-btn:hover{
-    cursor: pointer;
 }
 
-/* edit-popup */
+.delete-btn {
+    background: #dc3545;
+    text-decoration: none;
+}
 
 .modal {
     display: none;
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    inset: 0;
     background: rgba(0,0,0,0.5);
 }
 
 .modal-content {
-    width: 400px;
     background: white;
-    margin: 8% auto;
+    width: 380px;
+    margin: 10% auto;
     padding: 20px;
     border-radius: 10px;
     position: relative;
@@ -179,19 +167,17 @@
 
 .close-btn {
     position: absolute;
-    top: 10px;
-    right: 15px;
+    right: 10px;
     font-size: 22px;
     cursor: pointer;
 }
 
-.save-edit-btn {
+.save-btn {
     background: #0d6efd;
     color: white;
-    border: none;
-    padding: 10px;
-    border-radius: 8px;
-    cursor: pointer;
     width: 100%;
+    padding: 10px;
     margin-top: 10px;
+    border-radius: 6px;
+    border: none;
 }

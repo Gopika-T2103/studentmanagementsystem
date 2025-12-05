@@ -47,6 +47,31 @@ class Student(models.Model):
     class_name = models.CharField(max_length=50)
     # class_teacher = models.ForeignKey(classteacher, on_delete=models.SET_NULL, null=True)
 
+    admission_number=models.CharField(max_length=50,null=True,blank=True)
+    admission_date=models.DateField(null=True,blank=True)
+    date_of_birth=models.DateField(null=True,blank=True)
+
+    gender=models.CharField(
+        max_length=10,
+        choices=(('Male',"Male"),("Female","Female"),("Other","Other")),
+        null=True,blank=True
+    )
+
+    status=models.CharField(
+        max_length=20,
+        choices=(
+            ("Active","Active"),
+            ("Inactive","Inactive"),
+            ("Passed Out","Passed Out"),
+            ("TC Issued","TC Issued")
+        ),
+        default="Active"
+    )
+
+    passed_out_year=models.CharField(max_length=10,null=True,blank=True)
+    tc_issued_date=models.DateField(null=True,blank=True)
+
+
     guardian_name = models.CharField(max_length=100)
     guardian_phone = models.CharField(max_length=20)
     guardian_address = models.TextField()
