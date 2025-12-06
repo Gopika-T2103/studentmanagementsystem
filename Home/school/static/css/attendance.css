@@ -68,3 +68,25 @@ select {
     border-radius: 8px;
     margin: 15px 0;
 }
+
+
+
+
+/* VIEW ATTENDANCE */
+.history-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+}
+
+.history-table th,
+.history-table td {
+    border: 1px solid #aaa;
+    padding: 6px 10px;
+    text-align: center;
+}
+
+.history-table th {
+    background: #333;
+    color: white;
+}

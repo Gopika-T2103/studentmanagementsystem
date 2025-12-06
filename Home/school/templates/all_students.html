@@ -1,72 +1,71 @@
-{% load static %}
 
+
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
-    <title>All Students</title>
-    <link rel="stylesheet" href="{% static 'css/all_students.css' %}">
+    <title>Principal/All Students</title>
+    <link rel="stylesheet" href="{% static 'css/all_students.css' %}?v=1">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+
 </head>
 <body>
 
-<h2>All Students</h2>
+<h2>All Students - Class Wise List</h2>
+<a href="{% url 'principal_dashboard' %}" class="back-dashboard"> Back to Dashboard</a>
 
-<table border="1" class="student-table">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Roll No</th>
-            <th>Class</th>
-        </tr>
-    </thead>
+{% for class, students in classwise_students.items %}
+    <h3 >Class {{ class }} - Student List</h3>
 
-    <tbody>
-        {% for st in students %}
-        <tr>
-            <td class="open-popup"
-                data-name="{{ st.name }}"
-                data-class="{{ st.class_name }}"
-                data-guardian="{{ st.guardian_name }}"
-                data-phone="{{ st.guardian_phone }}"
-                data-address="{{ st.guardian_address }}"
-                data-teacher="{{ st.class_teacher.name }}"
-                data-stid="{{ st.id }}"
-            >
-                {{ st.name }}
-            </td>
+    <table class="student-table">
+        <thead>
+            <tr>
+                <th>Roll No</th>
+                <th>Name</th>
+                <th>Admission No</th>
+                <th>Admission Date</th>
+                <th>DOB</th>
+                <th>Gender</th>
+                <th>Status</th>
+                <th>Passed Out Year</th>
+                <th>TC Issued Date</th>
+                <th>Guardian Name</th>
+                <th>Phone</th>
+                <th>Address</th>
+            </tr>
+        </thead>
 
-            <td>{{ st.roll_no }}</td>
-            <td>{{ st.class_name }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-
-
-<!-- ========== POPUP ========== -->
-<div id="popup" class="popup">
-    <div class="popup-content">
-
-        <span class="close">&times;</span>
-
-        <h2 id="pname"></h2>
-
-        <p><strong>Class:</strong> <span id="pclass"></span></p>
-        <p><strong>Class Teacher:</strong> <span id="pteacher"></span></p>
-
-        <h3>Guardian Details</h3>
-        <p><strong>Name:</strong> <span id="pguardian"></span></p>
-        <p><strong>Phone:</strong> <span id="pphone"></span></p>
-        <p><strong>Address:</strong> <span id="paddress"></span></p>
-
-        <div class="actions">
-            <a id="attLink" class="btn">View Attendance</a>
-            <a id="markLink" class="btn">View Marks</a>
-        </div>
-
-    </div>
-</div>
-
-<script src="{% static 'js/studentprofile_popup.js' %}"></script>
-
+        <tbody>
+            {% for s in students %}
+            <tr>
+                <td>{{ s.roll_no }}</td>
+                <td>{{ s.name }}</td>
+                <td>{{ s.admission_number }}</td>
+                <td>{{ s.admission_date }}</td>
+                <td>{{ s.date_of_birth }}</td>
+                <td>{{ s.gender }}</td>
+                <td>
+                    <span class="status-badge 
+                    {% if s.status == 'Active' %}status-active
+                    {% elif s.status == 'Inactive' %}status-inactive
+                    {% elif s.status == 'Passed Out' %}status-passed
+                    {% elif s.status == 'TC Issued' %}status-tc
+                    {% endif %}">
+                        {{ s.status }}
+                    </span>
+                </td>
+                <td>{{ s.passed_out_year }}</td>
+                <td>{{ s.tc_issued_date }}</td>
+                <td>{{ s.guardian_name }}</td>
+                <td>{{ s.guardian_phone }}</td>
+                <td>{{ s.guardian_address }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endfor %}
+<hr>
 </body>
 </html>

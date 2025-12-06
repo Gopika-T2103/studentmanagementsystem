@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Edit Attendance</title>
+    <title>Teacher_dashboard/Edit Attendance</title>
     <link rel="stylesheet" href="{% static 'css/attendance.css' %}">
 </head>
 
@@ -45,5 +45,43 @@
         <a href="{% url 'select_attendance_session' %}" class="back-btn">Back</a>
     </center>
 </div>
+
+
+<!---------------------------------------------VIEW ATTENDANCE ------------------------------->
+
+<h2>Attendance History</h2>
+
+<table class="history-table">
+    <thead>
+        <tr>
+            <th>Roll No</th>
+            <th>Student Name</th>
+
+            {% comment %} Dynamic Date Columns {% endcomment %}
+            {% for stu, dates in attendance_table.items %}
+                {% for d, sessions in dates.items %}
+                    <th>{{ d }} (M)</th>
+                    <th>{{ d }} (A)</th>
+                {% endfor %}
+                {% break %}
+            {% endfor %}
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for stu, dates in attendance_table.items %}
+        <tr>
+            <td>{{ stu.roll_no }}</td>
+            <td>{{ stu.name }}</td>
+
+            {% for d, sessions in dates.items %}
+                <td>{{ sessions.morning }}</td>
+                <td>{{ sessions.afternoon }}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
 </body>
 </html>

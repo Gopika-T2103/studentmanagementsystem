@@ -14,18 +14,22 @@ class customuser(models.Model):
     )
     
     role=models.CharField(max_length=255,choices=ROLE_CHOICES)
-    
-    # def __str__(self):
-    #     return self.email
+
 
 
 
 class Teacher(models.Model):
+    STATUS_CHOICES=(
+        ("Active","Active"),
+        ("Resigned","Resigned"),
+        ("Retired","REtired")
+    )
     tname=models.CharField(max_length=255)
     teacher_id=models.CharField(max_length=255,unique=True)
     temail=models.CharField(max_length=255)
     tdept=models.CharField(max_length=255)
     tassign=models.CharField(max_length=255,null=True,blank=True)
+    status=models.CharField(max_length=20,choices=STATUS_CHOICES,default="Active")
     # user = models.OneToOneField(customuser, on_delete=models.CASCADE)
     # subject = models.CharField(max_length=50) 
 
@@ -78,6 +82,8 @@ class Student(models.Model):
 
     def __str__(self):
         return self.name
+    
+
     # Attendance Percentage Function
     def attendance_percentage(self):
         from .models import Attendance   # avoid circular import

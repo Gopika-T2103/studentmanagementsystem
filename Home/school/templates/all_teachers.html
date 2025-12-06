@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/all_teacher.css' %}?v=2">
-    <title>All_Teachers</title>
+    <link rel="stylesheet" href="{% static 'css/all_teacher.css' %}?v=3">
+    <title>Principal/All_Teachers</title>
 </head>
 <body>
 <h2>All Teachers</h2>
@@ -42,6 +42,7 @@
                         <th>Email id</th>
                         <th>Subjects</th>
                         <th>Assigned Class</th>
+                        <th>Status</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -53,66 +54,74 @@
                         <td>{{ t.temail }}</td>
                         <td>{{ t.tdept }}</td>
                         <td>{{ t.tassign }}</td>
-                        <!-- <td class="action-buttons">
+                        <td>
+                            <span class="status-badges
+                             {% if t.status == 'Active' %}status-active
+                             {% elif t.status == 'Resigned' %}status-resigned
+                             {% elif t.status == 'Retired' %}status-retired
+                             {% endif %}
+                             ">
+                                {{ t.status }}
+                            </span>
+                         </td>
+                       <td class="action-buttons">
                             <button class="edit-btn"
-                                data-name="{{t.tname}}"
-                                data-id="{{t.id}}"
-                                data-email="{{t.temail}}"
-                                data-dept="{{t.tdept}}"
-                                data-assign="{{t.tassign}}">
-                                Edit
-                            </button>
-                            <a href="{% url 'delete_teacher' t.id %}" class="delete-btn delete-link">Delete</a>
-                        </td> -->
-                        <td class="action-buttons">
-                             <a href="#" class="edit-btn" 
-                            onclick="openEditModal('{{ t.tname }}','{{ t.id }}','{{t.email }}', '{{ t.dept }}', '{{ t.assign }}')">
-                            Edit
-                            </a> 
-                            <a href="#" onclick="deleteRow(this)" class="delete">Delete</a>
+                                data-id="{{ t.id }}"
+                                data-name="{{ t.tname }}"
+                                data-tid="{{ t.teacher_id }}"
+                                data-email="{{ t.temail }}"
+                                data-dept="{{ t.tdept }}"
+                                data-assign="{{ t.tassign }}"
+                                data-status="{{ t.status }}"
+                            >Edit</button>
+
+                            <button class="delete-btn" data-id="{{ t.id }}">Delete</button>
                         </td>
                     </tr>
-                    {% empty %}
-                <tr>
-                    <td colspan="5">No teachers added yet.</td>
-                </tr>
-                {% endfor %}
+                    {% endfor %}
                 </tbody>
             </table>
         </div>
 </div>
 
 <!-- EDIT MODAL -->
-<div class="modal" id="editModal">
-    <div class="modal-content">
-        <span class="close-btn" id="closeEdit">&times;</span>
-
-        <h3>Edit Teacher Details</h3>
-
-        <form id="editTeacherForm" method="POST">
+<div id="editPopup" class="popup" style="display:none;">
+    <div class="popup-content">
+        <h3>Edit Teacher</h3>
+        <form id="editTeacherForm" method="POST" action="{% url 'update_teacher' %}">
             {% csrf_token %}
+            <input type="hidden" name="id" id="edit_id">
 
-            <label>Name</label>
-            <input type="text" id="edit_name" name="tname" required>
-            
-            <label>Id</label>
-            <input type="text" id="edit_id" name="tid" required>
+            <label>Name:</label>
+           <input type="text" name="tname" id="edit_name" required>
 
-            <label>Email</label>
-            <input type="email" id="edit_email" name="temail" required>
+            <label>Teacher ID:</label>
+            <input type="text" name="teacher_id" id="edit_tid" required>
 
-            <label>Department</label>
-            <input type="text" id="edit_dept" name="tdept" required>
+            <label>Email:</label>
+            <input type="email" name="temail" id="edit_email" required>
 
-            <label>Assigned Class</label>
-            <input type="text" id="edit_assign" name="tassign">
+            <label>Subject:</label>
+            <input type="text" name="tdept" id="edit_dept" required>
 
-            <button type="submit" class="save-btn">Save Changes</button>
+            <label>Assigned Class:</label>
+            <input type="text" name="tassign" id="edit_assign">
+
+            <label>Status:</label>
+            <select name="status" id="edit_status">
+                <option value="Active">Active</option>
+                <option value="Resigned">Resigned</option>
+                <option value="Retired">Retired</option>
+            </select>
+
+            <button type="submit" class="update-btn">Update</button>
+            <button type="button" class="close-btn" onclick="closePopup()">Cancel</button>
         </form>
-
     </div>
 </div>
 
-<script src="{% static 'js/all_teacher.js' %}"></script>
+
+<script src="{% static 'js/all_teachers.js' %}"></script>
+
 </body>
 </html>

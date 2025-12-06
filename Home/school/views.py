@@ -180,34 +180,52 @@ def all_teachers(request):
     return render(request,"all_teachers.html",{"teachers":teachers})
 
 
-def update_teacher(request, id):
-    teacher = Teacher.objects.get(id=id)
+# UPDATE TEACHER FORM IN ALL TEACHER LIST
+def update_teacher(request):
+    if request.method == "POST":
+        tid = request.POST.get("id")
+        teacher = Teacher.objects.get(id=tid)
 
-    if request.method == 'POST':
-        teacher.tname = request.POST.get('tname')
-        teacher.temail = request.POST.get('temail')
-        teacher.tdept = request.POST.get('tdept')
-        teacher.tassign = request.POST.get('tassign')
+        teacher.tname = request.POST.get("tname")
+        teacher.teacher_id = request.POST.get("teacher_id")
+        teacher.temail = request.POST.get("temail")
+        teacher.tdept = request.POST.get("tdept")
+        teacher.tassign = request.POST.get("tassign")
+        teacher.status = request.POST.get("status")
+
         teacher.save()
-
         messages.success(request, "Teacher details updated successfully!")
         return redirect("all_teachers")
 
+# DELETE THE TEACHER FROM THE ALL TEACHER LIST
+def resign_teacher(request, id):
+    teacher = Teacher.objects.get(id=id)
+    teacher.status = "Resigned"
+    teacher.save()
+
+    messages.success(request, "Teacher marked as resigned.")
     return redirect("all_teachers")
 
-def delete_teacher(request,id):
-    teacher=Teacher.objects.get(id=id)
-    teacher.delete()
-    messages.success(request,"Teacher data delete Succesfully!")
-
-    return redirect("all_teachers")
 
 
 
 def all_students(request):
-    students = Student.objects.all()
-    return render(request, "principal/all_students.html", {"students": students})
 
+    # Get all class names sorted alphabetically
+    classes=Student.objects.values_list('class_name',flat=True).distinct().order_by('class_name')
+    classwise_students={}
+
+    for cls in classes:
+
+        # fetch students of that class
+        students=Student.objects.filter(class_name=cls)\
+        .annotate(roll_int=Cast("roll_no",IntegerField()))\
+        .order_by("roll_no")   #sort by roll_bumber
+
+        classwise_students[cls]=students
+    return render(request,"all_students.html",{
+        "classwise_students":classwise_students
+    })
 
 def student_attendance(request, id):
     Student = get_object_or_404(Student, id=id)
@@ -419,8 +437,9 @@ def mark_attendance(request, session):
         return redirect('login')
 
     # Block weekends
-    if datetime.date.today().weekday() > 4:
-        return render(request, "error.html", {"message": "Attendance allowed only Monday–Friday"})
+    # if datetime.date.today().weekday() > 4:
+    #     messages.error(request,  "Attendance allowed only Monday–Friday")
+    #     return redirect("select_attendance_session")
 
     teacher_email = request.session.get('email')
     teacher = Teacher.objects.get(temail=teacher_email)
@@ -492,6 +511,24 @@ def edit_attendance(request):
         student__class_name=assigned_class,
         date=today
     ).order_by("student__roll_no")
+
+    # Load **ALL attendance history** for this class
+    history = Attendance.objects.filter(
+        student__class_name=assigned_class
+    ).order_by("date", "student__roll_no")
+
+    # Group by student → date → session
+    attendance_table = {}
+
+    for h in history:
+        stu = h.student
+        if stu not in attendance_table:
+            attendance_table[stu] = {}
+
+        if h.date not in attendance_table[stu]:
+            attendance_table[stu][h.date] = {"morning": "-", "afternoon": "-"}
+
+        attendance_table[stu][h.date][h.session] = h.status
 
     if request.method == "POST":
         for row in records:
