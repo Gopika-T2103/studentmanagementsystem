@@ -1,6 +1,6 @@
 from django.urls import path
 from . views import front_view,login_view,principal_dashboard,teacher_dashboard,student_dashboard,signup,add_teacher,all_teachers,update_teacher,resign_teacher,all_students,student_attendance,student_marks,class_list_view
-from .views import add_student,add_marks,view_marks,update_marks,select_attendance_session,mark_attendance,edit_attendance,edit_student
+from .views import add_student,add_marks,view_marks,update_marks,select_attendance_session,mark_attendance,view_attendance,edit_student,save_attendance
 urlpatterns=[
     path('',front_view,name='front'),
     path('login/',login_view,name='login'),
@@ -28,8 +28,9 @@ urlpatterns=[
     # path("teacher/delete_marks/<int:student_id>/", delete_marks, name="delete_marks"),
     path("teacher/attendance/select-session/",select_attendance_session, name="select_attendance_session"),
     path("teacher/attendance/<str:session>/", mark_attendance, name="mark_attendance"),
+    path("teacher/attendance/save/",save_attendance,name='save_attendance'),
 
-    path("teacher/attendance/edit/", edit_attendance, name="edit_attendance"),
-    path("teacher/edit_student/<int:id>/",edit_student,name="edit_student")
+    path("teacher/attendance/view/", view_attendance, name="view_attendance"),
+    path("teacher/edit_student/<int:id>/",edit_student,name="edit_student"),
 
 ]

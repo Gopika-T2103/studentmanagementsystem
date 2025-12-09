@@ -1,0 +1,172 @@
+<!-- {% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Teacher_dashboard/Edit Attendance</title>
+    <link rel="stylesheet" href="{% static 'css/view_attendance.css' %}?v=1">
+</head>
+
+<body> -->
+<!-- <div class="container">
+    <h2>Edit Attendance - {{ today }}</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Student</th>
+                    <th>Session</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for item in records %}
+                <tr>
+                    <td>{{ item.student_name }}</td>
+                    <td>{{ item.session|title }}</td>
+
+                    <td>
+                        <select name="status_{{ item.id }}">
+                            <option value="Present" {% if item.status == "Present" %}selected{% endif %}>Present</option>
+                            <option value="Absent" {% if item.status == "Absent" %}selected{% endif %}>Absent</option>
+                        </select>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <button type="submit" class="btn-submit">Update Attendance</button>
+    </form>
+
+    <center>
+        <a href="{% url 'select_attendance_session' %}" class="back-btn">Back</a>
+    </center>
+</div> -->
+
+
+<!---------------------------------------------VIEW ATTENDANCE ------------------------------->
+
+<!-- <h2 class="section-title">Attendance History</h2>
+
+<h2 class="section-title">View Attendance Sheet</h2> -->
+
+<!-- DATE FILTER FORM -->
+<!-- <form method="GET" class="date-filter">
+    <div class="date-item">
+        <label>Select Start Date:</label>
+        <input type="date" name="start" value="{{ start_date }}">
+    </div>
+
+    <div class="date-item">
+        <label>Select End Date:</label>
+        <input type="date" name="end" value="{{ end_date }}">
+    </div>
+
+    <button type="submit" class="btn-submit filter-btn">Show Attendance</button> -->
+<!-- </form> -->
+
+
+<!-- WEEKLY ATTENDANCE TABLE -->
+<!-- <table class="history-table">
+    <thead>
+        <tr>
+            <th>Roll No</th>
+            <th>Student Name</th>
+
+            {% for d in date_list %}
+                <th>{{ d }} <br> (M)</th>
+                <th>{{ d }} <br> (A)</th>
+            {% endfor %}
+
+
+            <th>Percentage</th>
+        </tr>
+    </thead>
+
+    <tbody>
+    {% for stu, dates in attendance_table.items %}
+    <tr>
+        <td>{{ stu.roll_no }}</td>
+        <td>{{ stu.name }}</td>
+
+        {% for d in date_list %}
+            <td class="status-cell">{{ dates[d].morning }}</td>
+            <td class="status-cell">{{ dates[d].afternoon }}</td>
+        {% endfor %}
+
+
+        <td class="percent">{{ student_percent.stu }}%</td>
+    </tr>
+    {% endfor %}
+</tbody>
+</table> -->
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'css/view_attendance.css' %}">
+</head>
+<body>
+    <div class="container-box">
+
+    <h2>Attendance Sheet - Class {{ class_name }}</h2>
+
+    <form method="GET">
+        <label>From:</label>
+        <input type="date" name="start" value="{{ start }}">
+        <label>To:</label>
+        <input type="date" name="end" value="{{ end }}">
+        <button type="submit" class="btn-att">Filter</button>
+    </form>
+
+    <br>
+
+    <table class="sheet-table">
+        <tr>
+            <th rowspan="2">Roll</th>
+            <th rowspan="2">Student</th>
+
+            {% for d in date_range %}
+                <th colspan="2">{{ d }}</th>
+            {% endfor %}
+
+            <th rowspan="2">Percentage</th>
+        </tr>
+
+        <tr>
+            {% for d in date_range %}
+                <th>M</th>
+                <th>A</th>
+            {% endfor %}
+        </tr>
+
+        {% for row in rows %}
+        <tr>
+            <td>{{ row.student.roll_no }}</td>
+            <td>{{ row.student.name }}</td>
+
+            {% for c in row.cells %}
+                <td class="{{ c.morning|lower }}">{{ c.morning|first }}</td>
+                <td class="{{ c.afternoon|lower }}">{{ c.afternoon|first }}</td>
+            {% endfor %}
+
+            <td>{{ row.percentage }}%</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+</body>
+</html>

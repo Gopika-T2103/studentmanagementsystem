@@ -1,4 +1,4 @@
-{% load static %}
+<!-- {% load static %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -53,5 +53,54 @@
         <a href="{% url 'select_attendance_session' %}" class="back-btn">Back</a>
     </center>
 </div>
+</body>
+</html> -->
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>teacher/mark attendance</title>
+    <link rel="stylesheet" href="{% static 'css/view_attendance.css' %}">
+</head>
+<body>
+
+<div class="container-box">
+    <h2>{{ session|title }} Attendance - {{ today }}</h2>
+    <p>Class: {{ class_name }}</p>
+
+    <form method="POST" action="{% url 'save_attendance' %}">
+    {% csrf_token %}
+    <input type="hidden" name="session" value="{{ session }}">
+    <input type="hidden" name="class_name" value="{{ class_name }}">
+
+    <table class="att-table">
+        <tr><th>Roll No</th><th>Name</th><th>Status</th></tr>
+
+        {% for student, status in students_with_status %}
+        <tr>
+            <td>{{ student.roll_no }}</td>
+            <td>{{ student.name }}</td>
+            <td>
+                <select name="att_{{ student.id }}">
+                    <option value="Present" {% if status == "Present" %}selected{% endif %}>Present</option>
+                    <option value="Absent"  {% if status == "Absent"  %}selected{% endif %}>Absent</option>
+                </select>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <button type="submit" class="btn-save">Save Attendance</button>
+</form>
+
+</div>
+
 </body>
 </html>

@@ -7,8 +7,9 @@ from .models import Student,Attendance,Marks
 from django.contrib.auth import authenticate,login
 from django.db.models import IntegerField
 from django.db.models.functions import Cast
-from datetime import date
-import datetime
+from datetime import date,timedelta,datetime
+from django.utils import timezone
+from django.urls import reverse
 
 # Create your views here.
 def login_view(request):
@@ -425,124 +426,197 @@ def update_marks(request):
         return redirect("view_marks")
     
 
-def select_attendance_session(request):
-    if request.session.get('role') !='teacher':
-        return redirect('login')
+# def select_attendance_session(request):
+#     if request.session.get('role') !='teacher':
+#         return redirect('login')
     
-    return render(request,'attendance_select_session.html')
+#     return render(request,'attendance_select_session.html')
 
 
-def mark_attendance(request, session):
-    if request.session.get('role') != 'teacher':
-        return redirect('login')
+# def mark_attendance(request, session):
+#     if request.session.get('role') != 'teacher':
+#         return redirect('login')
 
     # Block weekends
     # if datetime.date.today().weekday() > 4:
     #     messages.error(request,  "Attendance allowed only Monday–Friday")
     #     return redirect("select_attendance_session")
 
-    teacher_email = request.session.get('email')
-    teacher = Teacher.objects.get(temail=teacher_email)
-    assigned_class = teacher.tassign
+    # teacher_email = request.session.get('email')
+    # teacher = Teacher.objects.get(temail=teacher_email)
+    # assigned_class = teacher.tassign
 
-    students = Student.objects.filter(class_name=assigned_class).order_by("roll_no")
-    today = date.today()
+    # students = Student.objects.filter(class_name=assigned_class).order_by("roll_no")
+    # today = date.today()
 
-    if request.method == "POST":
-        for stu in students:
-            status = request.POST.get(f"status_{stu.id}")
+    # if request.method == "POST":
+    #     for stu in students:
+    #         status = request.POST.get(f"status_{stu.id}")
 
-            Attendance.objects.update_or_create(
-                student=stu,
-                date=today,
-                session=session,
-                defaults={
-                    "status": status,
-                    "student_name": stu.name,
-                    "student_class": stu.class_name,
-                }
-            )
+    #         Attendance.objects.update_or_create(
+    #             student=stu,
+    #             date=today,
+    #             session=session,
+    #             defaults={
+    #                 "status": status,
+    #                 "student_name": stu.name,
+    #                 "student_class": stu.class_name,
+    #             }
+    #         )
 
-        messages.success(request, f"{session.capitalize()} attendance saved!")
-        return redirect("mark_attendance", session=session)
+    #     messages.success(request, f"{session.capitalize()} attendance saved!")
+    #     return redirect("mark_attendance", session=session)
 
     # Count attendance for summary
-    morning_present = Attendance.objects.filter(
-        student__class_name=assigned_class,
-        date=today,
-        session="morning",
-        status="Present"
-    ).count()
+#     morning_present = Attendance.objects.filter(
+#         student__class_name=assigned_class,
+#         date=today,
+#         session="morning",
+#         status="Present"
+#     ).count()
 
-    afternoon_present = Attendance.objects.filter(
-        student__class_name=assigned_class,
-        date=today,
-        session="afternoon",
-        status="Present"
-    ).count()
+#     afternoon_present = Attendance.objects.filter(
+#         student__class_name=assigned_class,
+#         date=today,
+#         session="afternoon",
+#         status="Present"
+#     ).count()
 
-    total_present = morning_present + afternoon_present
-    total_absent = (len(students) * 2) - total_present
+#     total_present = morning_present + afternoon_present
+#     total_absent = (len(students) * 2) - total_present
 
-    return render(request, "attendance_mark.html", {
-        "students": students,
-        "session": session,
-        "today": today,
-        "assigned_class": assigned_class,
-        "morning_present": morning_present,
-        "afternoon_present": afternoon_present,
-        "total_present": total_present,
-        "total_absent": total_absent,
-    })
+#     return render(request, "attendance_mark.html", {
+#         "students": students,
+#         "session": session,
+#         "today": today,
+#         "assigned_class": assigned_class,
+#         "morning_present": morning_present,
+#         "afternoon_present": afternoon_present,
+#         "total_present": total_present,
+#         "total_absent": total_absent,
+#     })
 
 
 
-def edit_attendance(request):
-    if request.session.get('role') != 'teacher':
-        return redirect('login')
+# def edit_attendance(request):
+#     if request.session.get('role') != 'teacher':
+#         return redirect('login')
 
-    teacher_email = request.session.get('email')
-    teacher = Teacher.objects.get(temail=teacher_email)
-    assigned_class = teacher.tassign
+#     teacher_email = request.session.get('email')
+#     teacher = Teacher.objects.get(temail=teacher_email)
+#     assigned_class = teacher.tassign
 
-    today = date.today()
 
-    records = Attendance.objects.filter(
-        student__class_name=assigned_class,
-        date=today
-    ).order_by("student__roll_no")
+#     #  GET DATE RANGE
+#     today = date.today()
+
+#       # default = current Monday → Friday
+#     start_date=today - timedelta(days=today.weekday())
+#     end_date=start_date +timedelta(days=4)
+
+#     if request.GET.get("start") and request.GET.get("end"):
+#         start_date=date.fromisoformat(request.GET.get("start"))
+#         end_date=date.fromisoformat(request.GET.get("end"))
+
+
+#     # LOAD CURRENT DAY RECORDS FOR EDITING
+#     records = Attendance.objects.filter(
+#         student__class_name=assigned_class,
+#         date=today
+#     ).order_by("student__roll_no")
+
+
+#     week_history=Attendance.objects.filter(
+#         student__class_name=assigned_class,
+#         date__range=[start_date,end_date]
+#     ).order_by("date","student__roll_no")
+
+#     # CREATE WEEKLY TABLE 
+#     students = Student.objects.filter(class_name=assigned_class).order_by("roll_no")
+
+#     attendance_table={}
+
+#     # create empty structure
+#     for stu in students:
+#         attendance_table[stu] = {}
+#         for i in range((end_date - start_date).days + 1):
+#             d = start_date + timedelta(days=i)
+#             attendance_table[stu][d] = {"morning": "-", "afternoon": "-"}
+
+#     # fill attendance
+#     for a in week_history:
+#         attendance_table[a.student][a.date][a.session] = a.status
+
+#      # Create date list for template
+#     date_list = []
+#     if students:
+#         sample = next(iter(attendance_table.values()))
+#         date_list = list(sample.keys())
+
+
+#     #  CALCULATE PERCENTAGE
+   
+#     student_percent = {}
+
+#     for stu in students:
+#         all_records = Attendance.objects.filter(student=stu)
+#         total = all_records.count()
+#         present = all_records.filter(status="Present").count()
+#         percentage = round((present / total) * 100, 2) if total else 0
+#         student_percent[stu] = percentage
+
+#     # UPDATE CURRENT DAY ATTENDANCE
+   
+#     if request.method == "POST":
+#         for row in records:
+#             new_status = request.POST.get(f"status_{row.id}")
+#             row.status = new_status
+#             row.save()
+
+#         messages.success(request, "Attendance updated successfully!")
+#         return redirect("edit_attendance")
+
+#     return render(request, "attendance_edit.html", {
+#         "records": records,
+#         "today": today,
+#         "start_date": start_date,
+#         "end_date": end_date,
+#         "attendance_table": attendance_table,
+#         "student_percent": student_percent,
+#         "date_list":date_list
+#     })
 
     # Load **ALL attendance history** for this class
-    history = Attendance.objects.filter(
-        student__class_name=assigned_class
-    ).order_by("date", "student__roll_no")
+    # history = Attendance.objects.filter(
+    #     student__class_name=assigned_class
+    # ).order_by("date", "student__roll_no")
 
-    # Group by student → date → session
-    attendance_table = {}
+    # # Group by student → date → session
+    # attendance_table = {}
 
-    for h in history:
-        stu = h.student
-        if stu not in attendance_table:
-            attendance_table[stu] = {}
+    # for h in history:
+    #     stu = h.student
+    #     if stu not in attendance_table:
+    #         attendance_table[stu] = {}
 
-        if h.date not in attendance_table[stu]:
-            attendance_table[stu][h.date] = {"morning": "-", "afternoon": "-"}
+    #     if h.date not in attendance_table[stu]:
+    #         attendance_table[stu][h.date] = {"morning": "-", "afternoon": "-"}
 
-        attendance_table[stu][h.date][h.session] = h.status
+    #     attendance_table[stu][h.date][h.session] = h.status
 
-    if request.method == "POST":
-        for row in records:
-            new_status = request.POST.get(f"status_{row.id}")
-            row.status = new_status
-            row.save()
+    # if request.method == "POST":
+    #     for row in records:
+    #         new_status = request.POST.get(f"status_{row.id}")
+    #         row.status = new_status
+    #         row.save()
 
-        messages.success(request, "Attendance updated successfully!")
-        return redirect("edit_attendance")
+    #     messages.success(request, "Attendance updated successfully!")
+    #     return redirect("edit_attendance")
 
-    return render(request, "attendance_edit.html", {
-        "records": records,
-        "today": today,
-    })
+    # return render(request, "attendance_edit.html", {
+    #     "records": records,
+    #     "today": today,
+    # })
 
 
 
@@ -572,3 +646,158 @@ def edit_student(request,id):
         messages.success(request,"Student details updated successfully!!")
         return redirect('class_list')
     return redirect("class_list")
+
+
+
+
+# ATTENDANCE SECTION IN TEACHER DASHBOARD
+
+
+# SELECT THE SESSION FOR THE  ATTENDANCE MORNING OR THE AFTERNOON
+
+def select_attendance_session(request):
+    teacher_email = request.session.get("email")
+    teacher = Teacher.objects.filter(temail=teacher_email).first()
+
+    class_assigned = teacher.tassign  
+
+    return render(request, "attendance_select_session.html", {
+        "class_name": class_assigned
+    })
+
+
+# MARK THE ATTENDANCE
+
+def mark_attendance(request, session):
+    teacher_email = request.session.get("email")
+    teacher = Teacher.objects.filter(temail=teacher_email).first()
+    class_assigned = teacher.tassign
+
+    today = date.today()
+
+    students = Student.objects.filter(class_name=class_assigned).order_by("roll_no")
+
+    # Load existing attendance (if already marked)
+    existing = Attendance.objects.filter(
+        date=today,
+        session=session,
+        student__class_name=class_assigned
+    )
+
+    attendance_map = {a.student_id: a.status for a in existing}
+# Build list of tuples: student + prefilled status
+    students_with_status = []
+    for s in students:
+        status = attendance_map.get(s.id, "Absent")   # default Absent if not recorded
+        students_with_status.append((s, status))
+
+    return render(request, "attendance_mark.html", {
+        "session": session,
+        "today": today,
+        "students_with_status": students_with_status,   # <- pass this
+        "class_name": class_assigned,
+    })
+
+
+# SAVE ATTENDANCE
+
+def save_attendance(request):
+    if request.method != "POST":
+        return redirect("select_attendance_session")
+
+    session = request.POST.get("session")
+    class_name = request.POST.get("class_name")
+
+    today = date.today()
+
+    students = Student.objects.filter(class_name=class_name)
+
+    for student in students:
+        status = request.POST.get(f"att_{student.id}", "Absent")
+
+        Attendance.objects.update_or_create(
+            student=student,
+            date=today,
+            session=session,
+            defaults={
+                "status": status,
+                "student_name": student.name,
+                "student_class": class_name
+            }
+        )
+
+    messages.success(request, f"{session.capitalize()} attendance saved successfully!")
+    # return redirect("mark_attendance", session=session)
+    return redirect(f"/teacher/attendance/{session}/")
+
+
+# VIEW ATTENDANCE SHEET
+
+
+def view_attendance(request):
+    teacher_email = request.session.get("email")
+    teacher = Teacher.objects.filter(temail=teacher_email).first()
+    class_name = teacher.tassign
+
+    # Default week: last 7 days
+    today = date.today()
+    start_date = today - timedelta(days=6)
+    end_date = today
+
+    # Custom date filter
+    if request.GET.get("start") and request.GET.get("end"):
+        start_date = datetime.strptime(request.GET["start"], "%Y-%m-%d").date()
+        end_date = datetime.strptime(request.GET["end"], "%Y-%m-%d").date()
+
+    students = Student.objects.filter(class_name=class_name).order_by("roll_no")
+
+    # Load attendance for week
+    records = Attendance.objects.filter(
+        student__in=students,
+        date__range=(start_date, end_date)
+    )
+
+    # Map: (student_id, date, session)
+    att_map = {(a.student_id, a.date, a.session): a.status for a in records}
+
+    # Build table rows
+    table_rows = []
+    date_range = [start_date + timedelta(days=i) for i in range((end_date - start_date).days + 1)]
+
+    for s in students:
+        row = {
+            "student": s,
+            "cells": [],
+            "present": 0,
+            "total": 0
+        }
+
+        for dt in date_range:
+            m = att_map.get((s.id, dt, "morning"), "-")
+            a = att_map.get((s.id, dt, "afternoon"), "-")
+
+            # Count %
+            if m in ("Present", "Absent"):
+                row["total"] += 1
+                if m == "Present":
+                    row["present"] += 1
+
+            if a in ("Present", "Absent"):
+                row["total"] += 1
+                if a == "Present":
+                    row["present"] += 1
+
+            row["cells"].append({"morning": m, "afternoon": a})
+
+        percentage = round((row["present"] / row["total"]) * 100, 2) if row["total"] else 0
+        row["percentage"] = percentage
+
+        table_rows.append(row)
+
+    return render(request, "view_attendance.html", {
+        "class_name": class_name,
+        "date_range": date_range,
+        "rows": table_rows,
+        "start": start_date,
+        "end": end_date
+    })
